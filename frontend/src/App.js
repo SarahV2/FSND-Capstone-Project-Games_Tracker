@@ -1,10 +1,7 @@
 import './App.css';
 import React, { Component } from 'react';
-import { message } from './default.js';
-import config from './dedault.json';
 import { load_jwts, check_token_fragment, build_login_link } from './auth/auth';
 import LoginButton from './LoginButton';
-import Profile from './Profile';
 import NavBar from './components/layout/NavBar';
 import Game from './components/games/Game';
 import GamesList from './components/lists/GamesList';
@@ -18,8 +15,7 @@ class App extends Component {
     loginLink = build_login_link('/hello');
   }
   render() {
-    console.log(message);
-    console.log(config['name']);
+
     return (
       <div className='App'>
         <NavBar />

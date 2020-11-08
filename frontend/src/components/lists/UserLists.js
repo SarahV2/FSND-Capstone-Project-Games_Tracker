@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Game from '../games/Game';
 import { CardDeck } from 'react-bootstrap';
-import {filterGames} from '../../utils/helpers'
+import { filterGames } from '../../utils/helpers';
+import CustomizedList from './CustomizedList';
 let tempList = [
   {
     title: 'MedEvil',
@@ -44,32 +45,25 @@ export default class UserLists extends Component {
     let userGames = tempList; //this.props
     if (userGames) {
       // Currently Playing
-      const currentlyPlaying = filterGames(userGames,'currently playing')
+      const currentlyPlaying = filterGames(userGames, 'currently playing');
       console.log(currentlyPlaying);
 
       // On Hold
-      const onHold = userGames.filter((game) => {
-        return game.status === 'on hold';
-      });
+      const onHold = filterGames(userGames, 'on hold');
+
       console.log(onHold);
     }
 
     // Want to Play
-    const wantToPlay = userGames.filter((game) => {
-      return game.status === 'want to play';
-    });
+    const wantToPlay = filterGames(userGames, 'want to play');
     console.log(wantToPlay);
 
     // Dropped
-    const dropped = userGames.filter((game) => {
-      return game.status === 'dropped';
-    });
-    console.log(wantToPlay);
+    const dropped = filterGames(userGames, 'dropped');
+    console.log(dropped);
 
     // Finished
-    const finished = userGames.filter((game) => {
-      return game.status === 'finished';
-    });
+    const finished = filterGames(userGames, 'finished');
     console.log(finished);
   }
 
@@ -79,6 +73,7 @@ export default class UserLists extends Component {
     return (
       <div>
         <h2 className='text-left'>Currently Playing (0)</h2>
+        <CustomizedList />
         <h2 className='text-left'>On Hold (0)</h2>
         <h2 className='text-left'>Finished (0)</h2>
         <h2 className='text-left'>Want to Play (0)</h2>

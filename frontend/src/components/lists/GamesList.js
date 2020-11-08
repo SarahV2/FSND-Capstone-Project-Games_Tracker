@@ -4,9 +4,11 @@ import { CardDeck } from 'react-bootstrap';
 let tempList = [
   {
     title: 'MedEvil',
-    imgSrc: 'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png',
+    imgSrc:
+      'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png',
     releaseYear: 2002,
     genres: ['wonderful', 'great'],
+    platforms: ['PS2', 'PS4'],
   },
   {
     title: '2nd Game',
@@ -32,7 +34,7 @@ export default class GamesList extends Component {
   }
   render() {
     const { gamesList } = this.state;
-    const displayList = gamesList.map((game) => <Game game={game} />);
+    const displayList = gamesList.map((game,index) => <Game key={index} game={game} />);
     return <CardDeck>{displayList}</CardDeck>;
   }
 }
