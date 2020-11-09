@@ -20,63 +20,73 @@ CORS(app)
 
 
 # ROUTES
-"""
-@(Done) implement endpoint
-    GET /drinks
-        it should be a public endpoint
-        it should contain only the drink.short() data representation
-    returns status code 200 and
-    json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-"""
 
-
+# GET all games
 @app.route("/games", methods=["GET"])
 def get_drinks():
     games = Game.query.all()
-    # if len(drinks) == 0:
+    # if len(games) == 0:
     #     abort(404)
     games = [game.format() for game in games]
 
     return jsonify({"success": True, "games": games}), 200
 
 
-"""
-@(Done) implement endpoint
-    GET /drinks-detail
-        it should require the 'get:drinks-detail' permission
-        it should contain the drink.long() data representation
-    returns status code 200 and
-    json {"success": True, "drinks": drinks} where drinks is the list of drinks
-        or appropriate status code indicating reason for failure
-"""
+# -----------------------------------------------------------------
+
+# POST a new game
+
+
+
+# -----------------------------------------------------------------
+
+# PATCH game
+
+
+
+# -----------------------------------------------------------------
+
+# DELETE game
+
+
+
+# -----------------------------------------------------------------
+
+# POST a new user
+
+
+
+# -----------------------------------------------------------------
+
+# GET User's records
+
+
+
+# -----------------------------------------------------------------
+
+# POST a new game record
+
+
+# -----------------------------------------------------------------
+
+# PATCH user's game record (change game's status/ list)
+
+
+
+# -----------------------------------------------------------------
+
+# DELETE a user's game record
+
+
+
+# -----------------------------------------------------------------
 
 
 # Error Handling
-"""
-Example error handling for unprocessable entity
-"""
-
 
 @app.errorhandler(422)
 def unprocessable(error):
     return jsonify({"success": False, "error": 422, "message": "unprocessable"}), 422
-
-
-"""
-@(Done) implement error handlers using the @app.errorhandler(error) decorator
-    each error handler should return (with approprate messages):
-             jsonify({
-                    "success": False,
-                    "error": 404,
-                    "message": "resource not found"
-                    }), 404
-"""
-
-"""
-@(Done) implement error handler for 404
-    error handler should conform to general task above
-"""
 
 
 @app.errorhandler(404)
@@ -109,13 +119,6 @@ def unauthorized(error):
         jsonify({"success": False, "error": 401, "message": "unauthorized"}),
         401,
     )
-
-
-"""
-@(Done) implement error handler for AuthError
-    error handler should conform to general task above
-"""
-
 
 @app.errorhandler(AuthError)
 def handle_auth_errors(error):
