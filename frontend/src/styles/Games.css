@@ -1,0 +1,13 @@
+/* Game Records */
+
+td .cell-centered {
+  padding-top: 100px !important;
+}
+
+.table td:not(.poster) {
+  padding-top: 100px;
+}
+
+table tbody tr.cell-centered {
+  padding-top: 100px !important;
+}

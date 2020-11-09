@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import GameStatusSelector from '../games/GameStatusSelector';
-
+import '../../styles/Games.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
@@ -12,30 +12,38 @@ import {
 library.add(faEdit, faTrash, faMinusCircle);
 const placeholderImgSrc =
   'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png';
-  
+
 export default class GameRecord extends Component {
+  handleDeleteGameRecord = (e) => {
+    e.preventDefault();
+    const { currentGame } = this.props;
+    console.log('deleted', currentGame.id); // TODO: modify it to the corresponding ajax request
+  };
   render() {
-      console.log('key',this.props.index)
-      let {currentGame}=this.props
+    console.log('key', this.props.index);
+    let { currentGame } = this.props;
     return (
       <tr>
-        <td style={{ paddingTop: '100px' }}>{this.props.index}</td>
-        <td style={{ width: '200px' }}>
+        <td>{this.props.index}</td>
+        <td className='poster' style={{ width: '200px' }}>
           <img
             style={{ width: '200px', height: '250px' }}
             src={placeholderImgSrc}
           />
         </td>
-        <td style={{ paddingTop: '100px' }}>{currentGame.title}</td>
-        <td style={{ paddingTop: '100px' }}>{currentGame.releaseYear}</td>
-        <td style={{ paddingTop: '100px' }}>{currentGame.genres.join(' ,')}</td>
-        <td style={{ paddingTop: '100px' }}>{currentGame.platforms.join(' ,')}</td>
-        <td style={{ paddingTop: '100px' }}>
-          <GameStatusSelector defaultValue={currentGame.status} />
+        <td>{currentGame.title}</td>
+        <td>{currentGame.releaseYear}</td>
+        <td>{currentGame.genres.join(' , ')}</td>
+        <td>{currentGame.platforms.join(' , ')}</td>
+        <td>
+          <GameStatusSelector defaultValue={currentGame.status} gameRecordID={currentGame.id}/>
         </td>
-        <td style={{ paddingTop: '100px' }}>
+        <td>
           {' '}
-          <FontAwesomeIcon icon='trash' />
+          <FontAwesomeIcon
+            onClick={(e) => this.handleDeleteGameRecord(e)}
+            icon='trash'
+          />
         </td>
       </tr>
     );

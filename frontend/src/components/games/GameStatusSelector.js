@@ -2,11 +2,18 @@ import React, { Component } from 'react';
 
 export default class GameStatusSelector extends Component {
   state = {
-    gameStatus: 'finished',
+    gameStatus: 'currently playing',
   };
+
+  componentDidMount(){
+      this.setState({
+          gameStatus:this.props.defaultValue
+      })
+  }
   handleChange = (e) => {
     e.preventDefault();
-    console.log(e.target.value);
+    const { gameRecordID } = this.props;
+    console.log('new status:', e.target.value,'id:', gameRecordID); // TODO: modify it to the corresponding ajax request
     this.setState({
       gameStatus: e.target.value,
     });
@@ -21,7 +28,7 @@ export default class GameStatusSelector extends Component {
           paddingLeft: '0',
           paddingRight: '0',
         }}
-        value={this.props.defaultValue}
+        value={this.state.gameStatus}
         onChange={(e) => {
           this.handleChange(e);
         }}
