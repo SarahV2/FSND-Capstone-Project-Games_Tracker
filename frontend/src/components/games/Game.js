@@ -1,8 +1,15 @@
 import React, { Component } from 'react';
 import { Card, Button } from 'react-bootstrap';
+import AddGameRecord from './AddGameRecord';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+
+library.add(faPlusCircle);
 const placeholderImgSrc =
   'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/WPVG_icon_2016.svg/374px-WPVG_icon_2016.svg.png';
 export default class Game extends Component {
+  handleCreateGameRecord = () => {};
   state = {
     currentGame: '',
   };
@@ -21,7 +28,7 @@ export default class Game extends Component {
         <Card.Img
           className='mx-auto'
           variant='top'
-          style={{ }}
+          style={{}}
           src={currentGame.imgSrc ? currentGame.imgSrc : placeholderImgSrc}
         />
         <Card.Body>
@@ -29,7 +36,7 @@ export default class Game extends Component {
             Some quick example text to build on the card title and make up the
             bulk of the card's content.
           </Card.Text>
-          <Button variant='primary'>Add to List</Button>
+          <AddGameRecord game={currentGame} />
         </Card.Body>
       </Card>
     );

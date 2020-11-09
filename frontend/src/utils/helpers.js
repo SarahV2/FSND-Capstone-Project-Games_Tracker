@@ -4,3 +4,8 @@ export const filterGames = (list, status) => {
   });
   return filteredList;
 };
+
+export const addGameRecord=(gameID,userEmail)=>{
+  console.log('game ID:',gameID,'user email:',userEmail)
+
+}
