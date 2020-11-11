@@ -1,30 +1,29 @@
 import React, { Component } from 'react';
-import { Form, Button, Alert } from 'react-bootstrap';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 
 export default class NewGameForm extends Component {
   state = {
     title: '',
     imgSrc: '',
     about: '',
-    releaeYear: '',
-    genres: '',
-    platform: '',
+    releaseYear: '',
+    genres: [],
+    platform: [],
+    showAlerts: false,
+    errorMessage: '',
   };
 
   handleChange = (e) => {
-    const currentFormField=e.target.name
+    const currentFormField = e.target.name;
     if (currentFormField == 'genres' || currentFormField == 'platform') {
       let value = Array.from(
         e.target.selectedOptions,
         (option) => option.value
       );
-      if(currentFormField=='genres'){
-      this.setState({ genres: value });
-      }
-      else{
+      if (currentFormField == 'genres') {
+        this.setState({ genres: value });
+      } else {
         this.setState({ platform: value });
-
       }
     } else {
       this.setState({
@@ -35,17 +34,39 @@ export default class NewGameForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { title, imgSrc, about, releaeYear, genres, platform } = this.state;
-    const newGame = { title, imgSrc, about, releaeYear, genres, platform };
+    const { title, imgSrc, about, releaseYear, genres, platform } = this.state;
+    if (
+      title == '' ||
+      imgSrc == '' ||
+      about == '' ||
+      releaseYear == '' ||
+      genres == [] ||
+      platform == []
+    ) {
+      this.setState({
+        showAlerts: true,
+        errorMessage: 'Please fill out all fields',
+      });
+    }
+    const newGame = { title, imgSrc, about, releaseYear, genres, platform };
     console.log(newGame);
   };
 
   render() {
+    let { showAlerts, errorMessage } = this.state;
     return (
       <Row className='justify-content-md-center'>
         <Col xs={12} sm={4} md={4} lg={6}>
           <Form className='border'>
             <h4>Add a New Game</h4>
+            {showAlerts ? (
+              <div id='alerts-container'>
+                {' '}
+                <Alert variant='danger'>{errorMessage}</Alert>
+              </div>
+            ) : (
+              ''
+            )}
             <Form.Group className='text-left'>
               <Form.Label>Title</Form.Label>
               <Form.Control

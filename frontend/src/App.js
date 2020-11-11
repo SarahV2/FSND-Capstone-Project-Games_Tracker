@@ -8,6 +8,7 @@ import GamesList from './components/lists/GamesList';
 import UserLists from './components/lists/UserLists';
 import Footer from './components/layout/Footer';
 import NewGameForm from './components/admin/NewGameForm';
+import EditGameForm from './components/admin/EditGameForm';
 let loginLink = '/kk';
 class App extends Component {
   componentDidMount() {
@@ -23,7 +24,8 @@ class App extends Component {
 
         {/* <h2>{message}</h2> */}
         {/* <button>Login</button> */}
-        <NewGameForm/>
+        {/* <NewGameForm/> */}
+        <EditGameForm/>
         <h3>Games</h3>
         <GamesList />
         <UserLists />
