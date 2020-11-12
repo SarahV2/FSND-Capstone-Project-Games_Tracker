@@ -30,6 +30,8 @@ export default class EditGameForm extends Component {
       genres:currentGame.genres,
       platform:currentGame.platform
     });
+    // const {currentGameID}=this.props.location.state
+    // console.log(currentGameID)
   }
 
   handleChange = (e) => {

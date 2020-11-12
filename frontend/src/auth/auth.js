@@ -1,12 +1,9 @@
-// import { Injectable } from '@angular/core';
-// import { JwtHelperService } from '@auth0/angular-jwt';
+
 import jwt_decode from 'jwt-decode';
 
-// import { environment } from '../../environments/environment';
 import config from './../config.json';
 
 const JWTS_LOCAL_KEY = 'JWTS_LOCAL_KEY';
-const JWTS_ACTIVE_INDEX_KEY = 'JWTS_ACTIVE_INDEX_KEY';
 
 let url = config['auth0'].url;
 let audience = config['auth0'].audience;

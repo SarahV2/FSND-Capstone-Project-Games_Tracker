@@ -1,35 +1,38 @@
 import './App.css';
 import React, { Component } from 'react';
-import { load_jwts, check_token_fragment, build_login_link } from './auth/auth';
-import LoginButton from './LoginButton';
 import NavBar from './components/layout/NavBar';
-import Game from './components/games/Game';
 import GamesList from './components/lists/GamesList';
 import UserLists from './components/lists/UserLists';
 import Footer from './components/layout/Footer';
 import NewGameForm from './components/admin/NewGameForm';
 import EditGameForm from './components/admin/EditGameForm';
-let loginLink = '/kk';
-class App extends Component {
-  componentDidMount() {
-    load_jwts();
-    check_token_fragment();
-    loginLink = build_login_link('/hello');
-  }
-  render() {
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AdminDashboard from './components/admin/AdminDashboard';
+import PrivateRoute from './components/routing/PrivateRoute';
+import ProtectedRoute from './components/routing/ProtectedRoute';
 
+class App extends Component {
+  render() {
     return (
       <div className='App'>
-        <NavBar />
-
-        {/* <h2>{message}</h2> */}
-        {/* <button>Login</button> */}
-        {/* <NewGameForm/> */}
-        <EditGameForm/>
-        <h3>Games</h3>
-        <GamesList />
-        <UserLists />
-        <Footer/>
+        <Router>
+          <NavBar />
+          <Switch>
+            <Route exact path='/games' component={GamesList} />
+            <ProtectedRoute path='/games/new' component={NewGameForm} />
+            <ProtectedRoute
+              path='/games/edit/:gameID'
+              component={EditGameForm}
+            />
+            <PrivateRoute exact path='/games/mygames' component={UserLists} />
+            <ProtectedRoute
+              exact
+              path='/admin/games'
+              component={AdminDashboard}
+            />
+          </Switch>
+          <Footer />
+        </Router>
       </div>
     );
   }

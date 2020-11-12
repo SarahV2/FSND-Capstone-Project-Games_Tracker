@@ -51,7 +51,7 @@ body {
   /* width: 60%; */
 }
 
-/* #centered-form {
-  display: 'flex';
-  justify-content: 'center';
-} */
+#logo{
+  color:teal;
+  font-weight: bold;
+}
