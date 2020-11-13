@@ -23,12 +23,12 @@ def setup_db(app, database_path=database_path):
 
 
 """
-Question
+Game
 """
 
 
 class Game(db.Model):
-    __tablename__ = "questions"
+    __tablename__ = "games"
 
     id = Column(Integer, primary_key=True)
     title = Column(String)
@@ -55,3 +55,12 @@ class Game(db.Model):
             "release_year": self.release_year,
         }
 
+"""
+Game Record
+"""
+
+
+
+"""
+User
+"""
