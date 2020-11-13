@@ -4,7 +4,8 @@ from sqlalchemy import exc
 import json
 from flask_cors import CORS
 import sys
-from database.models import setup_db, Game
+# from database.models import setup_db, Game, User, GameRecord
+from database.models import *
 from auth.auth import AuthError, requires_auth
 from datetime import datetime
 
@@ -99,17 +100,83 @@ def deleteGame(game_id):
 # -----------------------------------------------------------------
 
 # add a new user
-# def addUser(user_email):
 
+def addUser(user_email):
+    newUser = User(email=user_email, created_at=datetime.now(),
+                   updated_at=datetime.now())
 
+    try:
+        newUser.insert()
+    except:
+        newUser.undoInsert()
+    return newUser.id
+
+# get user's ID
+
+def getUserID(user_email):
+    user = User.query.filter(
+        User.email == user_email).one_or_none()
+
+    currentUserID = ''
+
+    if user is None:
+        currentUserID = addUser(user_email)
+    else:
+        currentUserID = user.id
+    return currentUserID
 # -----------------------------------------------------------------
 
 # GET User's records
 
+@app.route('/user/gameRecords', methods=['GET'])
+def getUserRecords():
+    body = request.get_json()
+    user_email = body.get("email", None)
+    if user_email is None:
+        abort(400)
+    currentUserID = getUserID(user_email)
+
+    records = db.session.query(GameRecord).join(User, GameRecord.user_id == currentUserID).join(
+        Game).all()
+    allRecords = []
+    for record in records:
+        games = {
+            "game_id": record.game_id,
+            "title": record.Game.title,
+            "about": record.Game.about,
+            "imgSrc": record.Game.imgSrc,
+            "releaseYear": record.Game.release_year,
+            "genres": record.Game.genres,
+            "platforms": record.Game.platforms,
+        }
+        allRecords.append(games)
+
+    return jsonify({"success": True, "found": currentUserID, "userGames": allRecords}), 200
 
 # -----------------------------------------------------------------
 
 # POST a new game record
+
+# TODO: make sure the user can only create one record per game
+@app.route('/user/gameRecords', methods=['POST'])
+def addGameRecord():
+    body = request.get_json()
+    user_email = body.get("email", None)
+    game_id = body.get("gameID", None)
+    if user_email is None or game_id is None:
+        abort(400)
+
+    currentUserID = getUserID(user_email)
+
+    newRecord = GameRecord(user_id=currentUserID, game_id=game_id,
+                           created_at=datetime.now(), updated_at=datetime.now())
+
+    try:
+        newRecord.insert()
+    except:
+        newRecord.undoInsert()
+
+    return jsonify({"success": True, "found": currentUserID, "newRecord": newRecord.format()}), 200
 
 
 # -----------------------------------------------------------------
