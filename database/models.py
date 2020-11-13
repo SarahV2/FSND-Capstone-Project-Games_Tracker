@@ -43,7 +43,7 @@ class Game(db.Model):
     genres = Column(ARRAY(String))
     platforms = Column(ARRAY(String))
     created_at = Column(DateTime, default=datetime.now())
-    updated_at=Column(DateTime, default=func.now())
+    updated_at = Column(DateTime, default=func.now())
 
     def __init__(self, title, about, imgSrc, release_year, genres, platforms, created_at, updated_at):
         self.title = title
@@ -53,12 +53,12 @@ class Game(db.Model):
         self.genres = genres
         self.platforms = platforms
         self.created_at = created_at
-        self.updated_at=updated_at
+        self.updated_at = updated_at
 
     def insert(self):
         db.session.add(self)
         db.session.commit()
-        
+
     def undoInsert(self):
         db.rollback()
 
@@ -78,8 +78,8 @@ class Game(db.Model):
             "release_year": self.release_year,
             "genres": self.genres,
             "platforms": self.platforms,
-            "created_at":self.created_at,
-            "updated_at":self.updated_at
+            "created_at": self.created_at,
+            "updated_at": self.updated_at
         }
 
 
@@ -91,3 +91,23 @@ Game Record
 """
 User
 """
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True)
+    email = Column(String, unique=True)
+    created_at = Column(DateTime, default=datetime.now())
+    updated_at = Column(DateTime, default=datetime.now())
+
+    def __init__(self, email, created_at, updated_at):
+        self.email = email
+        self.created_at = created_at
+        self.updated_at = updated_at
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def undoInsert(self):
+        db.rollback()
