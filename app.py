@@ -35,7 +35,8 @@ def get_games():
 
 # POST a new game
 @app.route("/api/games", methods=['POST'])
-def addGame():
+@requires_auth("post:games")
+def addGame(token):
     body = request.get_json()
     title = body.get("title", None)
     about = body.get("about", None)

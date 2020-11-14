@@ -31,14 +31,14 @@ export default class GameDetails extends Component {
           />
         </td>
         <td>{currentGame.title}</td>
-        <td>{currentGame.plot}</td>
-        <td>{currentGame.releaseYear}</td>
+        <td>{currentGame.about}</td>
+        <td>{currentGame.release_year}</td>
         <td>{currentGame.genres.join(' , ')}</td>
         <td>{currentGame.platforms.join(' , ')}</td>
         <td>
           <Link
             to={{
-              pathname: `/edit/${currentGame.id}`,
+              pathname: `/games/edit/${currentGame.id}`,
               state: {
                 currentGameID: currentGame.id,
               },

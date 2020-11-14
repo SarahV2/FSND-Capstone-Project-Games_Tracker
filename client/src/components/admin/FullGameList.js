@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
 import GameDetails from './GameDetails'
+import {getAllGames} from '../../utils/api'
+
 const list = [
   {
     id: 1,
@@ -20,7 +22,7 @@ const list = [
     releaseYear: 2002,
     genres: ['wonderful', 'great'],
     platforms: ['PS1', 'PS4'],
-    plot: 'some info',
+    about: 'some info',
   },
 ];
 export default class FullGameList extends Component {
@@ -28,8 +30,20 @@ export default class FullGameList extends Component {
     currentList: [],
   };
 
-  componentDidMount() {
+   componentDidMount() {
     this.setState({currentList:list})
+    getAllGames().then((data) => {
+      console.log(data.games)
+      if(data.games.length>0){
+        this.setState({currentList:data.games})
+
+      }
+   })        
+    // console.log(lll)
+    // if(lll.length>0){
+    //   this.setState({currentList:lll})
+
+   // }
   }
   render() {
     const list = this.state.currentList.map((game, index) => {
@@ -43,7 +57,7 @@ export default class FullGameList extends Component {
               <th>#</th>
               <th>Poster</th>
               <th>Game Title</th>
-              <th>Plot</th>
+              <th>about</th>
               <th>Release Year</th>
               <th>Genre(s)</th>
               <th>Platform(s)</th>

@@ -11,31 +11,27 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 
-class App extends Component {
-  render() {
-    return (
-      <div className='App'>
-        <Router>
-          <NavBar />
-          <Switch>
-            <Route exact path='/games' component={GamesList} />
-            <ProtectedRoute path='/games/new' component={NewGameForm} />
-            <ProtectedRoute
-              path='/games/edit/:gameID'
-              component={EditGameForm}
-            />
-            <PrivateRoute exact path='/games/mygames' component={UserLists} />
-            <ProtectedRoute
-              exact
-              path='/admin/games'
-              component={AdminDashboard}
-            />
-          </Switch>
-          <Footer />
-        </Router>
-      </div>
-    );
-  }
-}
+const App = () => {
+  return (
+    <div className='App'>
+      <Router>
+        <NavBar />
+        <Switch>
+          <Route exact path='/games' component={GamesList} />
+          <ProtectedRoute exact path='/games/new' component={NewGameForm} />
+          <ProtectedRoute path='/games/edit/:gameID' component={EditGameForm} />
+          <PrivateRoute exact path='/games/mygames' component={UserLists} />
+          <ProtectedRoute
+            exact
+            path='/admin/games'
+            component={AdminDashboard}
+          />
+        </Switch>
+        <Footer />
+      </Router>
+    </div>
+  );
+  //  }
+};
 
 export default App;

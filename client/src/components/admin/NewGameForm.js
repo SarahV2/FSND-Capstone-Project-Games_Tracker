@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
-
+import {addGame} from '../../utils/api'
 export default class NewGameForm extends Component {
   state = {
     title: '',
@@ -8,14 +8,14 @@ export default class NewGameForm extends Component {
     about: '',
     releaseYear: '',
     genres: [],
-    platform: [],
+    platforms: [],
     showAlerts: false,
     errorMessage: '',
   };
 
   handleChange = (e) => {
     const currentFormField = e.target.name;
-    if (currentFormField == 'genres' || currentFormField == 'platform') {
+    if (currentFormField == 'genres' || currentFormField == 'platforms') {
       let value = Array.from(
         e.target.selectedOptions,
         (option) => option.value
@@ -23,7 +23,7 @@ export default class NewGameForm extends Component {
       if (currentFormField == 'genres') {
         this.setState({ genres: value });
       } else {
-        this.setState({ platform: value });
+        this.setState({ platforms: value });
       }
     } else {
       this.setState({
@@ -34,22 +34,24 @@ export default class NewGameForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { title, imgSrc, about, releaseYear, genres, platform } = this.state;
+    const { title, imgSrc, about, releaseYear, genres, platforms } = this.state;
     if (
       title == '' ||
       imgSrc == '' ||
       about == '' ||
       releaseYear == '' ||
       genres == [] ||
-      platform == []
+      platforms == []
     ) {
       this.setState({
         showAlerts: true,
         errorMessage: 'Please fill out all fields',
       });
     }
-    const newGame = { title, imgSrc, about, releaseYear, genres, platform };
+    const newGame = { title, imgSrc, about, releaseYear, genres, platforms };
     console.log(newGame);
+    console.log(this.props)
+    addGame(newGame,this.props.token)
   };
 
   render() {
@@ -142,7 +144,7 @@ export default class NewGameForm extends Component {
               </Form.Label>
               <Form.Control
                 required
-                name='platform'
+                name='platforms'
                 as='select'
                 multiple
                 onChange={(e) => this.handleChange(e)}
