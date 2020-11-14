@@ -48,10 +48,9 @@ def addGame():
                    genres=genres, platforms=platforms, created_at=datetime.now(), updated_at=datetime.now())
 
     try:
-
         newGame.insert()
     except:
-        newGame.undoInsert()
+        newGame.undo()
     return jsonify({"success": True, "new_game": newGame.format()}), 200
 
 
@@ -78,7 +77,7 @@ def updateGameInfo(game_id):
     try:
         game.update()
     except:
-        game.undoInsert()
+        game.undo()
     return jsonify({"success": True, "updated_game": game.format()}), 200
 
 # -----------------------------------------------------------------
@@ -93,13 +92,19 @@ def deleteGame(game_id):
 
     if game is None:
         abort(404)
+    try:
+        for record in game.records:
+            record.delete()
 
-    game.delete()
+        game.delete()
+    except:
+        game.undo()
     return jsonify({"success": True, "deleted": game_id}), 200
 
 # -----------------------------------------------------------------
 
 # add a new user
+
 
 def addUser(user_email):
     newUser = User(email=user_email, created_at=datetime.now(),
@@ -108,10 +113,11 @@ def addUser(user_email):
     try:
         newUser.insert()
     except:
-        newUser.undoInsert()
+        newUser.undo()
     return newUser.id
 
 # get user's ID
+
 
 def getUserID(user_email):
     user = User.query.filter(
@@ -124,9 +130,19 @@ def getUserID(user_email):
     else:
         currentUserID = user.id
     return currentUserID
+
+
+def checkUniqueness(user_id, game_id):
+    record = db.session.query(GameRecord).join(User, GameRecord.user_id == user_id).join(
+        Game, GameRecord.game_id == game_id).one_or_none()
+    if record is None:
+        return True
+    else:
+        return False
 # -----------------------------------------------------------------
 
 # GET User's records
+
 
 @app.route('/user/gameRecords', methods=['GET'])
 def getUserRecords():
@@ -157,7 +173,7 @@ def getUserRecords():
 
 # POST a new game record
 
-# TODO: make sure the user can only create one record per game
+
 @app.route('/user/gameRecords', methods=['POST'])
 def addGameRecord():
     body = request.get_json()
@@ -167,14 +183,24 @@ def addGameRecord():
         abort(400)
 
     currentUserID = getUserID(user_email)
+    game = Game.query.filter(
+        Game.id == game_id).one_or_none()
 
-    newRecord = GameRecord(user_id=currentUserID, game_id=game_id,
+    if game is None:
+        abort(404)
+
+    isUnique = checkUniqueness(currentUserID, game_id)
+
+    if not isUnique:
+        abort(400)
+
+    newRecord = GameRecord(user_id=currentUserID, game_id=game_id, status="want to play",
                            created_at=datetime.now(), updated_at=datetime.now())
 
     try:
         newRecord.insert()
     except:
-        newRecord.undoInsert()
+        newRecord.undo()
 
     return jsonify({"success": True, "found": currentUserID, "newRecord": newRecord.format()}), 200
 
@@ -182,12 +208,49 @@ def addGameRecord():
 # -----------------------------------------------------------------
 
 # PATCH user's game record (change game's status/ list)
+@app.route('/user/gameRecords/<record_id>', methods=['PATCH'])
+def updateRecord(record_id):
+    body = request.get_json()
+    user_email = body.get("email", None)
+    updated_status = body.get("status", None)
+
+    if user_email is None or updated_status is None:
+        abort(400)
+    currentUserID = getUserID(user_email)
+    record = GameRecord.query.filter(
+        GameRecord.id == record_id).one_or_none()
+    if record is None:
+        abort(404)
+    record.status = updated_status
+    record.updated_at = datetime.now()
+    try:
+        record.update()
+    except:
+        record.undo()
+    return jsonify({"success": True, "found": currentUserID, "updated_record": record.format()}), 200
 
 
 # -----------------------------------------------------------------
 
 # DELETE a user's game record
+@app.route('/user/gameRecords/<record_id>', methods=['DELETE'])
+def deleteRecord(record_id):
+    body = request.get_json()
+    user_email = body.get("email", None)
 
+    if user_email is None:
+        abort(400)
+    currentUserID = getUserID(user_email)
+    record = GameRecord.query.filter(
+        GameRecord.id == record_id).one_or_none()
+    if record is None:
+        abort(404)
+    try:
+        record.delete()
+    except:
+        record.undo()
+
+    return jsonify({"success": True, "found": currentUserID, "deleted_record": record_id}), 200
 
 # -----------------------------------------------------------------
 

@@ -60,8 +60,8 @@ class Game(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def undoInsert(self):
-        db.rollback()
+    def undo(self):
+        db.session.rollback()
 
     def update(self):
         db.session.commit()
@@ -93,12 +93,14 @@ class GameRecord(db.Model):
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     game_id = Column(Integer, ForeignKey('games.id'), nullable=False)
+    status = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow())
     updated_at = Column(DateTime, default=datetime.utcnow())
 
-    def __init__(self, user_id, game_id, created_at, updated_at):
+    def __init__(self, user_id, game_id, status, created_at, updated_at):
         self.user_id = user_id
         self.game_id = game_id
+        self.status=status
         self.created_at = created_at
         self.updated_at = updated_at
 
@@ -106,8 +108,8 @@ class GameRecord(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def undoInsert(self):
-        db.rollback()
+    def undo(self):
+        db.session.rollback()
 
     def update(self):
         db.session.commit()
@@ -121,6 +123,7 @@ class GameRecord(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "game_id": self.game_id,
+            "status": self.status,
             "created_at": self.created_at,
             "updated_at": self.updated_at
         }
@@ -147,5 +150,5 @@ class User(db.Model):
         db.session.add(self)
         db.session.commit()
 
-    def undoInsert(self):
-        db.rollback()
+    def undo(self):
+        db.session.rollback()
