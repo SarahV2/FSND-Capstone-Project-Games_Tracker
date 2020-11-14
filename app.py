@@ -21,7 +21,7 @@ CORS(app)
 # ROUTES
 
 # GET all games
-@app.route("/games", methods=["GET"])
+@app.route("/api/games", methods=["GET"])
 def get_games():
     games = Game.query.all()
     if len(games) == 0:
@@ -34,7 +34,7 @@ def get_games():
 # -----------------------------------------------------------------
 
 # POST a new game
-@app.route("/games", methods=['POST'])
+@app.route("/api/games", methods=['POST'])
 def addGame():
     body = request.get_json()
     title = body.get("title", None)
@@ -57,7 +57,7 @@ def addGame():
 # -----------------------------------------------------------------
 
 # PATCH game
-@app.route("/games/<game_id>", methods=['PATCH'])
+@app.route("/api/games/<game_id>", methods=['PATCH'])
 def updateGameInfo(game_id):
     game = Game.query.filter(
         Game.id == game_id).one_or_none()
@@ -85,7 +85,7 @@ def updateGameInfo(game_id):
 # DELETE game
 
 
-@app.route("/games/<game_id>", methods=["DELETE"])
+@app.route("/api/games/<game_id>", methods=["DELETE"])
 def deleteGame(game_id):
     game = Game.query.filter(
         Game.id == game_id).one_or_none()
@@ -144,7 +144,7 @@ def checkUniqueness(user_id, game_id):
 # GET User's records
 
 
-@app.route('/user/gameRecords', methods=['GET'])
+@app.route('/api/user/gameRecords', methods=['GET'])
 def getUserRecords():
     body = request.get_json()
     user_email = body.get("email", None)
@@ -174,7 +174,7 @@ def getUserRecords():
 # POST a new game record
 
 
-@app.route('/user/gameRecords', methods=['POST'])
+@app.route('/api/user/gameRecords', methods=['POST'])
 def addGameRecord():
     body = request.get_json()
     user_email = body.get("email", None)
@@ -208,7 +208,7 @@ def addGameRecord():
 # -----------------------------------------------------------------
 
 # PATCH user's game record (change game's status/ list)
-@app.route('/user/gameRecords/<record_id>', methods=['PATCH'])
+@app.route('/api/user/gameRecords/<record_id>', methods=['PATCH'])
 def updateRecord(record_id):
     body = request.get_json()
     user_email = body.get("email", None)
@@ -233,7 +233,7 @@ def updateRecord(record_id):
 # -----------------------------------------------------------------
 
 # DELETE a user's game record
-@app.route('/user/gameRecords/<record_id>', methods=['DELETE'])
+@app.route('/api/user/gameRecords/<record_id>', methods=['DELETE'])
 def deleteRecord(record_id):
     body = request.get_json()
     user_email = body.get("email", None)
