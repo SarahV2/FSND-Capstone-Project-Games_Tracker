@@ -23,7 +23,7 @@ In order to run the application locally, clone this repository first and then fo
 ### Backend
 First, navigate to the project's directory and then:
 1. Install dependencies ```pip install -r requirements.txt```
-2. Set up the app ```export FLASK_APP=flaskr```
+2. Set up the app ```export FLASK_APP=app.py```
 3. Set up the development environment ```export FLASK_ENV=development```
 4. Start the backend server by typing ```flask run```
 
