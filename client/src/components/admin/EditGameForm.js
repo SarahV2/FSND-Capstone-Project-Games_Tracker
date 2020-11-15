@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
+import { getGame } from '../../utils/api';
+import { withRouter } from 'react-router-dom';
+import Spinner from '../../utils/loading.gif';
+
 const currentGame = {
   id: 70,
   title: 'Some game title',
@@ -7,36 +11,60 @@ const currentGame = {
   about: 'some plot',
   releaseYear: '2021',
   genres: ['Adventure', 'Action', 'RPG'],
-  platform: ['PS5', 'PC'],
+  platforms: ['PS5', 'PC'],
 };
-export default class EditGameForm extends Component {
+class EditGameForm extends Component {
   state = {
     title: '',
     imgSrc: '',
     about: '',
     releaseYear: '',
     genres: [],
-    platform: [],
+    platforms: [],
     showAlerts: false,
     errorMessage: '',
+    loading: true,
+    notFound: true,
   };
 
   componentDidMount() {
-    this.setState({
-      title: currentGame.title,
-      imgSrc: currentGame.imgSrc,
-      about: currentGame.imgSrc,
-      releaseYear: currentGame.releaseYear,
-      genres:currentGame.genres,
-      platform:currentGame.platform
+    const authResult = new URLSearchParams(window.location.search);
+    const gameID = authResult.get('game');
+    console.log(gameID);
+    // this.setState({
+    //   title: currentGame.title,
+    //   imgSrc: currentGame.imgSrc,
+    //   about: currentGame.imgSrc,
+    //   releaseYear: currentGame.releaseYear,
+    //   genres: currentGame.genres,
+    //   platform: currentGame.platform,
+    // });
+
+    getGame(gameID).then((data) => {
+      if (data.game) {
+        console.log(data.game);
+        const currentGame = data.game;
+        this.setState({
+          title: currentGame.title,
+          imgSrc: currentGame.imgSrc,
+          about: currentGame.imgSrc,
+          releaseYear: currentGame.release_year,
+          genres: currentGame.genres,
+          platforms: currentGame.platforms,
+          notFound: false,
+          loading: false,
+        });
+      } else {
+        if (!data.success) {
+          this.setState({ notFound: true, loading: false });
+        }
+      }
     });
-    // const {currentGameID}=this.props.location.state
-    // console.log(currentGameID)
   }
 
   handleChange = (e) => {
     const currentFormField = e.target.name;
-    if (currentFormField == 'genres' || currentFormField == 'platform') {
+    if (currentFormField == 'genres' || currentFormField == 'platforms') {
       let value = Array.from(
         e.target.selectedOptions,
         (option) => option.value
@@ -44,7 +72,7 @@ export default class EditGameForm extends Component {
       if (currentFormField == 'genres') {
         this.setState({ genres: value });
       } else {
-        this.setState({ platform: value });
+        this.setState({ platforms: value });
       }
     } else {
       this.setState({
@@ -55,156 +83,171 @@ export default class EditGameForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    const { title, imgSrc, about, releaseYear, genres, platform } = this.state;
+    const { title, imgSrc, about, releaseYear, genres, platforms } = this.state;
     if (
       title == '' ||
       imgSrc == '' ||
       about == '' ||
       releaseYear == '' ||
       genres == [] ||
-      platform == []
+      platforms == []
     ) {
       this.setState({
         showAlerts: true,
         errorMessage: 'Please fill out all fields',
       });
     }
-    const newGame = { title, imgSrc, about, releaseYear, genres, platform };
-    console.log(newGame);
+    const updatedGameInfo = {
+      title,
+      imgSrc,
+      about,
+      releaseYear,
+      genres,
+      platforms,
+    };
+    console.log(updatedGameInfo);
   };
 
   render() {
     let { showAlerts, errorMessage } = this.state;
-    return (
-      <Row className='justify-content-md-center'>
-        <Col xs={12} sm={4} md={4} lg={6}>
-          <Form className='border'>
-            <h4>Edit Game Details</h4>
-            {showAlerts ? (
-              <div id='alerts-container'>
-                {' '}
-                <Alert variant='danger'>{errorMessage}</Alert>
+    if (this.state.loading) {
+      return <img src={Spinner} />;
+    }
+    if (!this.state.notFound) {
+      return (
+        <Row className='justify-content-md-center'>
+          <Col xs={12} sm={4} md={4} lg={6}>
+            <Form className='border'>
+              <h4>Edit Game Details</h4>
+              {showAlerts ? (
+                <div id='alerts-container'>
+                  {' '}
+                  <Alert variant='danger'>{errorMessage}</Alert>
+                </div>
+              ) : (
+                ''
+              )}
+              <Form.Group className='text-left'>
+                <Form.Label>Title</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='title'
+                  placeholder="Games's title"
+                  value={this.state.title}
+                  required
+                  onChange={(e) => this.handleChange(e)}
+                />
+              </Form.Group>
+
+              <Form.Group className='text-left'>
+                <Form.Label>Image URL</Form.Label>
+                <Form.Control
+                  type='text'
+                  name='imgSrc'
+                  placeholder='https://'
+                  value={this.state.imgSrc}
+                  required
+                  onChange={(e) => this.handleChange(e)}
+                />
+              </Form.Group>
+              <Form.Group className='text-left'>
+                <Form.Label>About</Form.Label>
+                <Form.Control
+                  name='about'
+                  placeholder='More Info about the game'
+                  as='textarea'
+                  rows={3}
+                  value={this.state.about}
+                  required
+                  onChange={(e) => this.handleChange(e)}
+                />
+              </Form.Group>
+              <Form.Group className='text-left'>
+                <Form.Label>Release Year</Form.Label>
+                <Form.Control
+                  type='number'
+                  name='releaseYear'
+                  placeholder='Year'
+                  value={this.state.releaseYear}
+                  required
+                  onChange={(e) => this.handleChange(e)}
+                />
+              </Form.Group>
+
+              <Form.Group className='text-left'>
+                <Form.Label>
+                  Genre(s): <small> multiple select (ctrl+left click)</small>
+                </Form.Label>
+                <Form.Control
+                  required
+                  name='genres'
+                  as='select'
+                  value={this.state.genres}
+                  multiple
+                  onChange={(e) => this.handleChange(e)}
+                >
+                  <option>Action</option>
+                  <option>Adventure</option>
+                  <option>Battle Royal</option>
+                  <option>RPG</option>
+                  <option>Sports</option>
+                  <option>Racing</option>
+                  <option>Fighting</option>
+                  <option>Strategy</option>
+                  <option>Rhythm</option>
+                  <option>Simulator</option>
+                  <option>Educational</option>
+                </Form.Control>
+              </Form.Group>
+
+              <Form.Group className='text-left'>
+                <Form.Label>
+                  Platform(s): <small> multiple select (ctrl+left click)</small>
+                </Form.Label>
+                <Form.Control
+                  required
+                  name='platforms'
+                  as='select'
+                  multiple
+                  value={this.state.platforms}
+                  onChange={(e) => this.handleChange(e)}
+                >
+                  <option>PC</option>
+                  <option>Xbox Series X</option>
+                  <option>PS5</option>
+                  <option>Nintendo Switch</option>
+                  <option>Nintendo Switch Lite</option>
+                  <option>Xbox One X</option>
+                  <option>Xbox One S</option>
+                  <option>PS4</option>
+                  <option>Xbox One</option>
+                  <option>Nintendo 3DS/2DS</option>
+                  <option>Xbox 360</option>
+                  <option>PS3</option>
+                  <option>Wii U</option>
+                  <option>Nintendo DS</option>
+                  <option>PS2</option>
+                  <option>Wii</option>
+                  <option>PS1</option>
+                  <option>Other</option>
+                </Form.Control>
+              </Form.Group>
+              <div id='submit-button'>
+                <Button
+                  onClick={(e) => this.handleSubmit(e)}
+                  variant='light'
+                  type='submit'
+                >
+                  Submit
+                </Button>
               </div>
-            ) : (
-              ''
-            )}
-            <Form.Group className='text-left'>
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type='text'
-                name='title'
-                placeholder="Games's title"
-                value={this.state.title}
-                required
-                onChange={(e) => this.handleChange(e)}
-              />
-            </Form.Group>
-
-            <Form.Group className='text-left'>
-              <Form.Label>Image URL</Form.Label>
-              <Form.Control
-                type='text'
-                name='imgSrc'
-                placeholder='https://'
-                value={this.state.imgSrc}
-                required
-                onChange={(e) => this.handleChange(e)}
-              />
-            </Form.Group>
-            <Form.Group className='text-left'>
-              <Form.Label>About</Form.Label>
-              <Form.Control
-                name='about'
-                placeholder='More Info about the game'
-                as='textarea'
-                rows={3}
-                value={this.state.about}
-                required
-                onChange={(e) => this.handleChange(e)}
-              />
-            </Form.Group>
-            <Form.Group className='text-left'>
-              <Form.Label>Release Year</Form.Label>
-              <Form.Control
-                type='number'
-                name='releaseYear'
-                placeholder='Year'
-                value={this.state.releaseYear}
-                required
-                onChange={(e) => this.handleChange(e)}
-              />
-            </Form.Group>
-
-            <Form.Group className='text-left'>
-              <Form.Label>
-                Genre(s): <small> multiple select (ctrl+left click)</small>
-              </Form.Label>
-              <Form.Control
-                required
-                name='genres'
-                as='select'
-                value={this.state.genres}
-                multiple
-                onChange={(e) => this.handleChange(e)}
-              >
-                <option>Action</option>
-                <option>Adventure</option>
-                <option>Battle Royal</option>
-                <option>RPG</option>
-                <option>Sports</option>
-                <option>Racing</option>
-                <option>Fighting</option>
-                <option>Strategy</option>
-                <option>Rhythm</option>
-                <option>Simulator</option>
-                <option>Educational</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Form.Group className='text-left'>
-              <Form.Label>
-                Platform(s): <small> multiple select (ctrl+left click)</small>
-              </Form.Label>
-              <Form.Control
-                required
-                name='platform'
-                as='select'
-                multiple
-                value={this.state.platform}
-                onChange={(e) => this.handleChange(e)}
-              >
-                <option>PC</option>
-                <option>Xbox Series X</option>
-                <option>PS5</option>
-                <option>Nintendo Switch</option>
-                <option>Nintendo Switch Lite</option>
-                <option>Xbox One X</option>
-                <option>Xbox One S</option>
-                <option>PS4</option>
-                <option>Xbox One</option>
-                <option>Nintendo 3DS/2DS</option>
-                <option>Xbox 360</option>
-                <option>PS3</option>
-                <option>Wii U</option>
-                <option>Nintendo DS</option>
-                <option>PS2</option>
-                <option>Wii</option>
-                <option>PS1</option>
-                <option>Other</option>
-              </Form.Control>
-            </Form.Group>
-            <div id='submit-button'>
-              <Button
-                onClick={(e) => this.handleSubmit(e)}
-                variant='light'
-                type='submit'
-              >
-                Submit
-              </Button>
-            </div>
-          </Form>
-        </Col>
-      </Row>
-    );
+            </Form>
+          </Col>
+        </Row>
+      );
+    } else {
+      return <p>The requested page cannot be found</p>;
+    }
   }
 }
+export default withRouter(EditGameForm);

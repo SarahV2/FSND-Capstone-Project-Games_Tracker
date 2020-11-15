@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { Link } from 'react-router-dom';
+import {deleteGame} from '../../utils/api'
+
 import {
   faEdit,
   faTrash,
@@ -17,6 +19,7 @@ export default class GameDetails extends Component {
         e.preventDefault();
         const { currentGame } = this.props;
         console.log('deleted', currentGame.id); // TODO: modify it to the corresponding ajax request
+        deleteGame(currentGame.id,this.props.token)
       };
   render() {
     console.log('key', this.props.index);
@@ -38,7 +41,7 @@ export default class GameDetails extends Component {
         <td>
           <Link
             to={{
-              pathname: `/games/edit/${currentGame.id}`,
+              pathname: `/games/edit/info?game=${currentGame.id}`,
               state: {
                 currentGameID: currentGame.id,
               },

@@ -46,9 +46,10 @@ export default class FullGameList extends Component {
    // }
   }
   render() {
+    console.log(this.props)
     const list = this.state.currentList.map((game, index) => {
-      return <GameDetails key={index} currentGame={game} index={(index+1)} />;
-    });
+      return <GameDetails key={index} token={this.props.token} currentGame={game} index={(index+1)} />;
+    }); 
     return (
       <div>
         <Table striped bordered hover>

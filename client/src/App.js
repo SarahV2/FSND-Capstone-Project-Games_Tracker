@@ -19,7 +19,7 @@ const App = () => {
         <Switch>
           <Route exact path='/games' component={GamesList} />
           <ProtectedRoute exact path='/games/new' component={NewGameForm} />
-          <ProtectedRoute path='/games/edit/:gameID' component={EditGameForm} />
+          <ProtectedRoute path='/games/edit' component={EditGameForm} />
           <PrivateRoute exact path='/games/mygames' component={UserLists} />
           <ProtectedRoute
             exact
@@ -31,7 +31,6 @@ const App = () => {
       </Router>
     </div>
   );
-  //  }
 };
 
 export default App;
