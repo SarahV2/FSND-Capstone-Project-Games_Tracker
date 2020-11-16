@@ -17,6 +17,7 @@ const App = () => {
       <Router>
         <NavBar />
         <Switch>
+          <Route exact path='/' component={GamesList} />
           <Route exact path='/games' component={GamesList} />
           <ProtectedRoute exact path='/games/new' component={NewGameForm} />
           <ProtectedRoute path='/games/edit' component={EditGameForm} />

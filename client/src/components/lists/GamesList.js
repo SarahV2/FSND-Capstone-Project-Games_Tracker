@@ -1,77 +1,66 @@
 import React, { Component } from 'react';
 import Game from '../games/Game';
 import { CardDeck } from 'react-bootstrap';
+import { getAllGames } from '../../utils/api';
 
-let tempList = [
-  {
-    id:1,
-    title: 'MedEvil',
-    imgSrc:
-      'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'currently playing',
-  },
-  {
-    id:45,
-    title: 'MedEvil',
-    imgSrc:
-      'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'currently playing',
-  },
-  {
-    id:2,
-    title: '2nd Game',
-    imgSrc: '',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'finished',
-  },
-  {
-    id:3,
-    title: '3rd Game',
-    imgSrc: '',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'want to play',
-  },
-  {
-    id:3,
-    title: '3rd Game',
-    imgSrc: '',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'want to play',
-  },
-  {
-    id:3,
-    title: '3rd Game',
-    imgSrc: '',
-    releaseYear: 2002,
-    genres: ['wonderful', 'great'],
-    platforms:['PS2','PS5'],
-    status: 'want to play',
-  },
-];
 export default class GamesList extends Component {
   state = {
     gamesList: [],
+    page: 1,
+    totalGames: 0,
   };
   componentDidMount() {
-    this.setState({
-      gamesList: tempList,
+    this.getGames();
+  }
+
+  getGames() {
+    getAllGames(this.state.page).then((data) => {
+      console.log(data.games);
+      if (data.games) {
+        this.setState({
+          gamesList: data.games,
+          totalGames: data.total_games,
+        });
+        console.log('got games', data.games);
+      }
     });
   }
+
+  selectPage(num) {
+    this.setState({ page: num }, () => this.getGames());
+  }
+
+  createPagination() {
+    let pageNumbers = [];
+    let maxPage = Math.ceil(this.state.totalGames / 9);
+    for (let i = 1; i <= maxPage; i++) {
+      pageNumbers.push(
+        <span
+          key={i}
+          className={`page-num ${i === this.state.page ? 'active' : ''}`}
+          onClick={() => {
+            this.selectPage(i);
+          }}
+        >
+          {i}
+        </span>
+      );
+    }
+    return pageNumbers;
+  }
+
   render() {
-    const { gamesList } = this.state;
-    const displayList = gamesList.map((game,index) => <Game key={index} game={game} />);
-    return <CardDeck>{displayList}</CardDeck>;
+    // const { gamesList } = this.state;
+    console.log(this.state);
+    const displayList = this.state.gamesList.map((game, index) => {
+      console.log('current', this.state.gamesList);
+      return <Game key={index} game={game} />;
+    });
+    return (
+      <div>
+        <CardDeck>{displayList}</CardDeck>
+        <div className='pagination-menu'>{this.createPagination()}</div>
+      </div>
+    );
   }
 }

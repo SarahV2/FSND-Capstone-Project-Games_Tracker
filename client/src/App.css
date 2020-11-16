@@ -51,7 +51,22 @@ body {
   /* width: 60%; */
 }
 
-#logo{
-  color:teal;
+#logo {
+  color: teal;
   font-weight: bold;
+}
+
+.pagination-menu {
+  letter-spacing: 0.5em;
+  cursor: pointer;
+  color: darkblue;
+}
+
+.card-space {
+  margin-top: 5%;
+  padding: 5%;
+}
+
+.center-me {
+  text-align: center;
 }

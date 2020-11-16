@@ -18,18 +18,31 @@ CORS(app)
 
 # db_drop_and_create_all()
 
+GAMES_PER_PAGE = 9
+
+
+def paginate_games(request, selection):
+    page = request.args.get("page", 1, type=int)
+    start = (page - 1) * GAMES_PER_PAGE
+    end = start + GAMES_PER_PAGE
+    games = [game.format() for game in selection]
+
+    finalized_list = games[start:end]
+    return finalized_list
 
 # ROUTES
 
 # GET all games
 @app.route("/api/games", methods=["GET"])
 def get_games():
-    games = Game.query.all()
-    if len(games) == 0:
+    games_list = Game.query.all()
+    if len(games_list) == 0:
         abort(404)
-    games = [game.format() for game in games]
+    current_list = paginate_games(request, games_list)
 
-    return jsonify({"success": True, "games": games}), 200
+    # games = [game.format() for game in games]
+
+    return jsonify({"success": True, "games": current_list,"total_games":len(games_list)}), 200
 
 
 # -----------------------------------------------------------------

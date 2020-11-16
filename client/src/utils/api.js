@@ -22,7 +22,7 @@ export const addGame = (gameDetails, token) => {
       return response.json();
     })
     .then((jsonResponse) => {
-      window.location.href = `/admin/games`;
+    //   window.location.href = `/admin/games`;
     })
     .catch((error) => {
       console.log(error);
@@ -31,8 +31,8 @@ export const addGame = (gameDetails, token) => {
 
 // Get an array containing all games
 // GET '/api/games'
-export const getAllGames = () => {
-  return fetch(`${link}/games`, {
+export const getAllGames = (page) => {
+  return fetch(`${link}/games?page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

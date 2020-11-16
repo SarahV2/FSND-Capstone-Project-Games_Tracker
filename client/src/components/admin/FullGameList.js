@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'react-bootstrap';
-import GameDetails from './GameDetails'
-import {getAllGames} from '../../utils/api'
+import GameDetails from './GameDetails';
+import { getAllGames } from '../../utils/api';
 
 const list = [
   {
@@ -28,28 +28,75 @@ const list = [
 export default class FullGameList extends Component {
   state = {
     currentList: [],
+    page: 1,
+    totalGames: 0,
   };
 
-   componentDidMount() {
-    this.setState({currentList:list})
-    getAllGames().then((data) => {
-      console.log(data.games)
-      if(data.games.length>0){
-        this.setState({currentList:data.games})
-
+  componentDidMount() {
+    // this.setState({currentList:list})
+    const { page } = this.state;
+    getAllGames(page).then((data) => {
+      console.log(data.games);
+      if (data.games.length > 0) {
+        this.setState({
+          currentList: data.games,
+          totalGames: data.total_games,
+        });
       }
-   })        
+    });
     // console.log(lll)
     // if(lll.length>0){
     //   this.setState({currentList:lll})
 
-   // }
+    // }
+  }
+
+  getGames() {
+    getAllGames(this.state.page).then((data) => {
+      console.log(data.games);
+      if (data.games.length > 0) {
+        this.setState({
+          currentList: data.games,
+          totalGames: data.total_games,
+        });
+      }
+    });
+  }
+
+  selectPage(num) {
+    this.setState({ page: num }, () => this.getGames());
+  }
+
+  createPagination() {
+    let pageNumbers = [];
+    let maxPage = Math.ceil(this.state.totalGames / 10);
+    for (let i = 1; i <= maxPage; i++) {
+      pageNumbers.push(
+        <span
+          key={i}
+          className={`page-num ${i === this.state.page ? 'active' : ''}`}
+          onClick={() => {
+            this.selectPage(i);
+          }}
+        >
+          {i}
+        </span>
+      );
+    }
+    return pageNumbers;
   }
   render() {
-    console.log(this.props)
+    console.log(this.props);
     const list = this.state.currentList.map((game, index) => {
-      return <GameDetails key={index} token={this.props.token} currentGame={game} index={(index+1)} />;
-    }); 
+      return (
+        <GameDetails
+          key={index}
+          token={this.props.token}
+          currentGame={game}
+          index={index + 1}
+        />
+      );
+    });
     return (
       <div>
         <Table striped bordered hover>
@@ -62,16 +109,13 @@ export default class FullGameList extends Component {
               <th>Release Year</th>
               <th>Genre(s)</th>
               <th>Platform(s)</th>
-              <th>
-                Edit Info
-              </th>
-              <th>
-                Delete
-              </th>
+              <th>Edit Info</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>{list}</tbody>
         </Table>
+        <div className='pagination-menu'>{this.createPagination()}</div>
       </div>
     );
   }

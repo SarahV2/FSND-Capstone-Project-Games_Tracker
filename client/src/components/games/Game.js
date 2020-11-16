@@ -19,26 +19,25 @@ export default class Game extends Component {
     });
   }
   render() {
-    const { currentGame } = this.state;
+    const currentGame = this.props.game;
     return (
-      <Card style={{ width: '18rem' }}>
-        <Card.Title style={{ paddingTop: '2%', fontSize: '1.5rem' }}>
-          {currentGame.title}
-        </Card.Title>
-        <Card.Img
-          className='mx-auto'
-          variant='top'
-          style={{}}
-          src={currentGame.imgSrc ? currentGame.imgSrc : placeholderImgSrc}
-        />
-        <Card.Body>
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <AddGameRecord game={currentGame} />
-        </Card.Body>
-      </Card>
+      <div class='center-me col-lg-4'>
+        <Card style={{ width: '30rem' }} className='card-space'>
+          <Card.Title style={{ paddingTop: '2%', fontSize: '1.5rem' }}>
+            {currentGame.title}
+          </Card.Title>
+          <Card.Img
+            className='mx-auto'
+            variant='top'
+            style={{}}
+            src={currentGame.imgSrc ? currentGame.imgSrc : placeholderImgSrc}
+          />
+          <Card.Body>
+            <Card.Text>{currentGame.about}</Card.Text>
+            <AddGameRecord game={currentGame} />
+          </Card.Body>
+        </Card>
+      </div>
     );
   }
 }
