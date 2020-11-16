@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
-import {addGame} from '../../utils/api'
+import { addGame } from '../../utils/api';
 export default class NewGameForm extends Component {
   state = {
     title: '',
@@ -32,30 +32,44 @@ export default class NewGameForm extends Component {
     }
   };
 
+  resetFields(){
+    this.setState({
+      title:'',
+      about:'',
+      imgSrc:'',
+      releaseYear:'',
+      genres:[],
+      platforms:[]
+    })
+  }
   handleSubmit = (e) => {
     e.preventDefault();
     const { title, imgSrc, about, releaseYear, genres, platforms } = this.state;
     if (
-      title == '' ||
-      imgSrc == '' ||
-      about == '' ||
-      releaseYear == '' ||
-      genres == [] ||
-      platforms == []
+      title === '' ||
+      imgSrc === '' ||
+      about === '' ||
+      releaseYear === '' ||
+      genres.length === 0 ||
+      platforms.length === 0
     ) {
       this.setState({
         showAlerts: true,
         errorMessage: 'Please fill out all fields',
       });
+    } else {
+      const newGame = { title, imgSrc, about, releaseYear, genres, platforms };
+      console.log(newGame);
+      console.log(this.props);
+      this.setState({ showAlerts: false });
+      addGame(newGame, this.props.tokenValue);
+      this.resetFields()
     }
-    const newGame = { title, imgSrc, about, releaseYear, genres, platforms };
-    console.log(newGame);
-    console.log(this.props)
-    addGame(newGame,this.props.token)
   };
 
   render() {
     let { showAlerts, errorMessage } = this.state;
+    console.log('got em', this.props.tokenValue);
     return (
       <Row className='justify-content-md-center'>
         <Col xs={12} sm={4} md={4} lg={6}>
@@ -75,6 +89,7 @@ export default class NewGameForm extends Component {
                 type='text'
                 name='title'
                 placeholder="Games's title"
+                value={this.state.title}
                 required
                 onChange={(e) => this.handleChange(e)}
               />
@@ -86,6 +101,7 @@ export default class NewGameForm extends Component {
                 type='text'
                 name='imgSrc'
                 placeholder='https://'
+                value={this.state.imgSrc}
                 required
                 onChange={(e) => this.handleChange(e)}
               />
@@ -98,6 +114,7 @@ export default class NewGameForm extends Component {
                 placeholder='More Info about the game'
                 as='textarea'
                 rows={3}
+                value={this.state.about}
                 required
                 onChange={(e) => this.handleChange(e)}
               />
@@ -108,6 +125,7 @@ export default class NewGameForm extends Component {
                 type='number'
                 name='releaseYear'
                 placeholder='Year'
+                value={this.state.releaseYear}
                 required
                 onChange={(e) => this.handleChange(e)}
               />
@@ -121,6 +139,7 @@ export default class NewGameForm extends Component {
                 required
                 name='genres'
                 as='select'
+                value={this.state.genres}
                 multiple
                 onChange={(e) => this.handleChange(e)}
               >
@@ -146,6 +165,8 @@ export default class NewGameForm extends Component {
                 required
                 name='platforms'
                 as='select'
+                value={this.state.platforms}
+
                 multiple
                 onChange={(e) => this.handleChange(e)}
               >

@@ -1,5 +1,5 @@
 import './App.css';
-import React, { Component } from 'react';
+import React, {useState, Component } from 'react';
 import NavBar from './components/layout/NavBar';
 import GamesList from './components/lists/GamesList';
 import UserLists from './components/lists/UserLists';
@@ -10,8 +10,30 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AdminDashboard from './components/admin/AdminDashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import ProtectedRoute from './components/routing/ProtectedRoute';
+import { useAuth0 } from '@auth0/auth0-react';
+import FullGameList from './components/admin/FullGameList';
+let finalToken = '';
+const getToken = async (getAccessTokenSilently) => {
+  
+  const token = await getAccessTokenSilently({ audience: 'vdtracker' });
 
+  return token;
+};
+
+const setToken = (token) => {
+  finalToken = token;
+};
 const App = () => {
+  const [token, setTokenValue] = useState(0);
+
+  const { isAuthenticated, isLoading,getAccessTokenSilently } = useAuth0();
+  if(!isLoading&&isAuthenticated){
+  getToken(getAccessTokenSilently).then((data) => {
+    setToken(data);
+    setTokenValue(data)
+    console.log(token)
+  });
+  }
   return (
     <div className='App'>
       <Router>
@@ -19,13 +41,14 @@ const App = () => {
         <Switch>
           <Route exact path='/' component={GamesList} />
           <Route exact path='/games' component={GamesList} />
-          <ProtectedRoute exact path='/games/new' component={NewGameForm} />
-          <ProtectedRoute path='/games/edit' component={EditGameForm} />
+          <ProtectedRoute exact path='/games/new' component={NewGameForm} tokenValue={token} />
+          <ProtectedRoute path='/games/edit' component={EditGameForm} tokenValue={token} />
           <PrivateRoute exact path='/games/mygames' component={UserLists} />
           <ProtectedRoute
             exact
             path='/admin/games'
-            component={AdminDashboard}
+            component={FullGameList}
+            tokenValue={token}
           />
         </Switch>
         <Footer />

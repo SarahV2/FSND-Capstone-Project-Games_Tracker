@@ -30,7 +30,7 @@ export default class GameDetails extends Component {
         <td className='poster' style={{ width: '200px' }}>
           <img
             style={{ width: '200px', height: '250px' }}
-            src={placeholderImgSrc}
+            src={currentGame.imgSrc}
           />
         </td>
         <td>{currentGame.title}</td>

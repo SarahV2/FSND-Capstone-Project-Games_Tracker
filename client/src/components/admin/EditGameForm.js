@@ -1,21 +1,11 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import { getGame, updateGame } from '../../utils/api';
-import { withRouter } from 'react-router-dom';
 import Spinner from '../../utils/loading.gif';
 
-const currentGame = {
-  id: 70,
-  title: 'Some game title',
-  imgSrc: 'link',
-  about: 'some plot',
-  releaseYear: '2021',
-  genres: ['Adventure', 'Action', 'RPG'],
-  platforms: ['PS5', 'PC'],
-};
 class EditGameForm extends Component {
   state = {
-    gameID:'',
+    gameID: '',
     title: '',
     imgSrc: '',
     about: '',
@@ -31,22 +21,11 @@ class EditGameForm extends Component {
   componentDidMount() {
     const authResult = new URLSearchParams(window.location.search);
     const gameID = authResult.get('game');
-    console.log(gameID);
-    // this.setState({
-    //   title: currentGame.title,
-    //   imgSrc: currentGame.imgSrc,
-    //   about: currentGame.imgSrc,
-    //   releaseYear: currentGame.releaseYear,
-    //   genres: currentGame.genres,
-    //   platform: currentGame.platform,
-    // });
-
     getGame(gameID).then((data) => {
       if (data.game) {
-        console.log(data.game);
         const currentGame = data.game;
         this.setState({
-          gameID:currentGame.id,
+          gameID: currentGame.id,
           title: currentGame.title,
           imgSrc: currentGame.imgSrc,
           about: currentGame.about,
@@ -66,12 +45,12 @@ class EditGameForm extends Component {
 
   handleChange = (e) => {
     const currentFormField = e.target.name;
-    if (currentFormField == 'genres' || currentFormField == 'platforms') {
+    if (currentFormField === 'genres' || currentFormField === 'platforms') {
       let value = Array.from(
         e.target.selectedOptions,
         (option) => option.value
       );
-      if (currentFormField == 'genres') {
+      if (currentFormField === 'genres') {
         this.setState({ genres: value });
       } else {
         this.setState({ platforms: value });
@@ -91,8 +70,8 @@ class EditGameForm extends Component {
       imgSrc == '' ||
       about == '' ||
       releaseYear == '' ||
-      genres == [] ||
-      platforms == []
+      genres.length === 0 ||
+      platforms.length === 0
     ) {
       this.setState({
         showAlerts: true,
@@ -108,8 +87,9 @@ class EditGameForm extends Component {
       platforms,
     };
     console.log(updatedGameInfo);
-    const {gameID}=this.state
-    updateGame(gameID,updatedGameInfo,this.props.token)
+    const { gameID } = this.state;
+    this.setState({ showAlerts: false });
+    updateGame(gameID, updatedGameInfo, this.props.tokenValue);
   };
 
   render() {
@@ -254,4 +234,4 @@ class EditGameForm extends Component {
     }
   }
 }
-export default withRouter(EditGameForm);
+export default EditGameForm;

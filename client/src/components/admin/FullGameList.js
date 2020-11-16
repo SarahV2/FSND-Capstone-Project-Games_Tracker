@@ -91,7 +91,7 @@ export default class FullGameList extends Component {
       return (
         <GameDetails
           key={index}
-          token={this.props.token}
+          token={this.props.tokenValue}
           currentGame={game}
           index={index + 1}
         />
