@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
-import { getGame } from '../../utils/api';
+import { getGame, updateGame } from '../../utils/api';
 import { withRouter } from 'react-router-dom';
 import Spinner from '../../utils/loading.gif';
 
@@ -15,6 +15,7 @@ const currentGame = {
 };
 class EditGameForm extends Component {
   state = {
+    gameID:'',
     title: '',
     imgSrc: '',
     about: '',
@@ -45,9 +46,10 @@ class EditGameForm extends Component {
         console.log(data.game);
         const currentGame = data.game;
         this.setState({
+          gameID:currentGame.id,
           title: currentGame.title,
           imgSrc: currentGame.imgSrc,
-          about: currentGame.imgSrc,
+          about: currentGame.about,
           releaseYear: currentGame.release_year,
           genres: currentGame.genres,
           platforms: currentGame.platforms,
@@ -106,6 +108,8 @@ class EditGameForm extends Component {
       platforms,
     };
     console.log(updatedGameInfo);
+    const {gameID}=this.state
+    updateGame(gameID,updatedGameInfo,this.props.token)
   };
 
   render() {

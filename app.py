@@ -81,7 +81,8 @@ def addGame(token):
 
 # PATCH game
 @app.route("/api/games/<game_id>", methods=["PATCH"])
-def updateGameInfo(game_id):
+@requires_auth("patch:games")
+def updateGameInfo(token,game_id):
     game = Game.query.filter(Game.id == game_id).one_or_none()
 
     if game is None:

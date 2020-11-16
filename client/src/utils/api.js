@@ -7,7 +7,7 @@ export const addGame = (gameDetails, token) => {
     method: 'POST',
     body: JSON.stringify({
       title: gameDetails.title,
-      about: gameDetails.title,
+      about: gameDetails.about,
       imgSrc: gameDetails.imgSrc,
       releaseYear: gameDetails.releaseYear,
       genres: gameDetails.genres,
@@ -94,3 +94,29 @@ return fetch(`${link}/games/${gameID}`, {
 
 // Update game's info
 // PATCH '/api/games/<game_id>
+export const updateGame = (gameID,gameDetails, token) => {
+    fetch(`${link}/games/${gameID}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        title: gameDetails.title,
+        about: gameDetails.about,
+        imgSrc: gameDetails.imgSrc,
+        releaseYear: gameDetails.releaseYear,
+        genres: gameDetails.genres,
+        platforms: gameDetails.platforms,
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((jsonResponse) => {
+        window.location.href = `/admin/games`;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
