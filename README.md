@@ -40,7 +40,7 @@ A user with this role has the authority of adding and managing games (updating e
 ```delete:games```: permission to delete a game
 
 ### Gamer
-A user with this role has the ability to link games to their account, this is done in some form of creating a 'record' that links the chosen game to the user's account
+A user with this role has the ability to link games to their account, this is done in some form of creating a 'record' that links the chosen game to the user's account. New users aquire this role automatically.
 #### Gamer's permissions
 ```get:records```: permission to get the user's records <br>
 ```post:records```: permission to link a game to the user's list <br>
