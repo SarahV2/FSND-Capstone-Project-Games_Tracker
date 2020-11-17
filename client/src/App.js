@@ -25,12 +25,14 @@ const setToken = (token) => {
 };
 const App = () => {
   const [token, setTokenValue] = useState(0);
+  const [email, setEmail] = useState(0);
 
-  const { isAuthenticated, isLoading,getAccessTokenSilently } = useAuth0();
+  const { isAuthenticated, isLoading,getAccessTokenSilently,user } = useAuth0();
   if(!isLoading&&isAuthenticated){
   getToken(getAccessTokenSilently).then((data) => {
     setToken(data);
     setTokenValue(data)
+    setEmail(user.email)
     console.log(token)
   });
   }
@@ -43,7 +45,7 @@ const App = () => {
           <Route exact path='/games' component={GamesList} />
           <ProtectedRoute exact path='/games/new' component={NewGameForm} tokenValue={token} />
           <ProtectedRoute path='/games/edit' component={EditGameForm} tokenValue={token} />
-          <PrivateRoute exact path='/games/mygames' component={UserLists} />
+          <PrivateRoute exact path='/games/mygames' component={UserLists} tokenValue={token} email={email} />
           <ProtectedRoute
             exact
             path='/admin/games'

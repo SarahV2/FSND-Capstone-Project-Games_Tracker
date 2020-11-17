@@ -58,6 +58,8 @@ export default class UserLists extends Component {
       gamesList: tempList,
     });
 
+    console.log(this.props)
+
     let userGames = tempList; //this.props
     //if (userGames) {
       // Currently Playing
