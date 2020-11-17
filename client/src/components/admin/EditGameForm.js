@@ -89,7 +89,7 @@ class EditGameForm extends Component {
     console.log(updatedGameInfo);
     const { gameID } = this.state;
     this.setState({ showAlerts: false });
-    updateGame(gameID, updatedGameInfo, this.props.tokenValue);
+    updateGame(gameID, updatedGameInfo, this.props.token);
   };
 
   render() {

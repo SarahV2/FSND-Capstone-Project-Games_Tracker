@@ -58,7 +58,7 @@ export default class UserLists extends Component {
       gamesList: tempList,
     });
 
-    console.log(this.props)
+    console.log(this.props.email)
 
     let userGames = tempList; //this.props
     //if (userGames) {

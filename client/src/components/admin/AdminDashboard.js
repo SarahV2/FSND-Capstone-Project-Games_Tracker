@@ -6,7 +6,7 @@ const AdminDashboard = (props) => {
   const { user } = useAuth0();
   const userRole = user && user['http://demozero.net/roles'][0];
   if (userRole === 'admin') {
-    return <FullGameList token={props.tokenValue} />;
+    return <FullGameList token={props.token} />;
   } else {
     return <h4>Sorry, you're not authorized to view this page</h4>;
   }

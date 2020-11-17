@@ -62,7 +62,7 @@ export default class NewGameForm extends Component {
       console.log(newGame);
       console.log(this.props);
       this.setState({ showAlerts: false });
-      addGame(newGame, this.props.tokenValue);
+      addGame(newGame, this.props.token);
       this.resetFields()
     }
   };

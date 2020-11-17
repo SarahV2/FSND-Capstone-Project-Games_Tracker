@@ -21,7 +21,7 @@ export default class Game extends Component {
   render() {
     const currentGame = this.props.game;
     return (
-      <div class='center-me col-lg-4'>
+      <div className='center-me col-lg-4'>
         <Card style={{ width: '30rem' }} className='card-space'>
           <Card.Title style={{ paddingTop: '2%', fontSize: '1.5rem' }}>
             {currentGame.title}

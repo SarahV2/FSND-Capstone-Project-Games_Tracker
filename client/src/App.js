@@ -43,9 +43,9 @@ const App = () => {
           audience: 'vdtracker',
         });
         setTokenValue(token);
-       // if (isAuthenticated) {
-          setEmail(user.email);
-   //     }
+        if (isAuthenticated) {
+        setEmail(user.email);
+        }
       } catch (e) {
         console.error(e);
       }
@@ -70,25 +70,25 @@ const App = () => {
             exact
             path='/games/new'
             component={NewGameForm}
-            tokenValue={tokeno}
+           token={tokeno}
           />
           <ProtectedRoute
             path='/games/edit'
             component={EditGameForm}
-            tokenValue={tokeno}
+           token={tokeno}
           />
           <PrivateRoute
             exact
             path='/games/mygames'
             component={UserLists}
-            tokenValue={tokeno}
-            email={email}
+           token={tokeno}
+           email={email}
           />
           <ProtectedRoute
             exact
             path='/admin/games'
             component={FullGameList}
-            tokenValue={tokeno}
+           token={tokeno}
             
           />
         </Switch>
