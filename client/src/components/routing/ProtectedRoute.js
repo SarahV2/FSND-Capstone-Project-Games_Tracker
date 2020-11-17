@@ -20,7 +20,7 @@ const ProtectedRoute = ({ component: Component ,location, match, ...rest }) => {
       render={(props) =>
         !isLoading && !isAdmin ? (
           <Redirect to='/games' />
-        ) : props.tokenValue !== '' ? (
+        ) : props.tokenValue != '' ? (
           <Component  {...props} {...rest } />
         ) : (
           <img src={Spinner} />

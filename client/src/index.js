@@ -9,7 +9,7 @@ ReactDOM.render(
   <Auth0Provider
     domain="video-games-tracker.us.auth0.com"
     clientId="7tJDNbF45ryVnh7tHRe6KoqHbnCOgID2"
-    redirectUri="http://localhost:3000"
+    redirectUri="http://localhost:3000/games"
   >
     <React.StrictMode>
       <App />
