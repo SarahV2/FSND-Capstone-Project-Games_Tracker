@@ -21,7 +21,7 @@ const ProtectedRoute = ({ component: Component ,location, match, ...rest }) => {
     <Route
       render={(props) =>
         !isLoading && !isAuthenticated ? (
-          <Redirect to='/games' />) //: 
+          <Redirect to='/games' />) 
           :props.token != '' ? 
           (<Component {...props} {...rest } />)
          : (

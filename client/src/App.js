@@ -12,6 +12,7 @@ import PrivateRoute from './components/routing/PrivateRoute';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 import { useAuth0 } from '@auth0/auth0-react';
 import FullGameList from './components/admin/FullGameList';
+import TransitiveComponent from './components/routing/TransitiveComponent';
 // let finalToken = '';
 // const getToken = async (getAccessTokenSilently) => {
 //   const token = await getAccessTokenSilently({
@@ -64,7 +65,7 @@ const App = () => {
       <Router>
         <NavBar />
         <Switch>
-          <Route exact path='/' component={GamesList} />
+          <Route exact path='/' component={GamesList}  />
           <Route exact path='/games' component={GamesList} />
           <ProtectedRoute
             exact
@@ -81,6 +82,13 @@ const App = () => {
             exact
             path='/games/mygames'
             component={UserLists}
+           token={tokeno}
+           email={email}
+          />
+          <PrivateRoute
+            exact
+            path='/mygames'
+            component={TransitiveComponent}
            token={tokeno}
            email={email}
           />

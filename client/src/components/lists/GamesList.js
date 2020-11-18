@@ -52,9 +52,10 @@ export default class GamesList extends Component {
   render() {
     // const { gamesList } = this.state;
     console.log(this.state);
+    console.log('games list',this.props)
     const displayList = this.state.gamesList.map((game, index) => {
       console.log('current', this.state.gamesList);
-      return <Game key={index} game={game} />;
+      return <Game key={index} game={game} token={this.props.token} />;
     });
     return (
       <div>

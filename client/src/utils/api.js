@@ -1,5 +1,8 @@
 const link = 'http://localhost:5000/api';
 
+
+  //--------------------------------------------------- Game ----------------------------------------------
+
 // Add a new game
 // POST '/api/games'
 export const addGame = (gameDetails, token) => {
@@ -120,3 +123,100 @@ export const updateGame = (gameID,gameDetails, token) => {
         console.log(error);
       });
   };
+
+  //--------------------------------------------------- User's Records ----------------------------------------------
+
+// Get an array containing all user records
+// GET '/api/games'
+export const getUserRecords = (email,token) => {
+  return fetch(`${link}/user/records`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({email})
+  }).then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+};
+
+// Add a game to the user's list
+// POST '/api/user/games'
+export const addGameToList = (gameID,email, token) => {
+  fetch(`${link}/user/games`, {
+    method: 'POST',
+    body: JSON.stringify({
+      email,
+      gameID,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonResponse) => {
+       //window.location.href = `/games/mygames`; use <Redirect /> instead
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+
+
+// Update a user's record
+// PATCH '/api/user/records/<record_id>
+export const updateGameRecord = (recordID,status,token) => {
+  fetch(`${link}/user/records/${recordID}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      status}),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .then((jsonResponse) => {
+      //window.location.href = `/games/mygames`;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+
+
+// Delete a record using its ID and the user's email
+// DELETE '/api/games/<game_id>'
+export const deleteUserRecord=(recordID, token)=>{
+  fetch(`${link}/user/records/${recordID}`, {
+      method: 'DELETE',
+      headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+    })
+      .then((response) => {
+        console.log('game successfully deleted', recordID);
+        //window.location.href = `/games/mygames`;
+
+      })
+      .catch((error) => {
+        console.log(error)
+      });
+}

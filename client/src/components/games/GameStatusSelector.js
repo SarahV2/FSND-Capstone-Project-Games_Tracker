@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-
+import { updateGameRecord } from '../../utils/api';
+import {Redirect} from 'react-router-dom'
 export default class GameStatusSelector extends Component {
   state = {
     gameStatus: 'currently playing',
+    redirect:false
   };
 
   componentDidMount(){
@@ -10,15 +12,28 @@ export default class GameStatusSelector extends Component {
           gameStatus:this.props.defaultValue
       })
   }
-  handleChange = (e) => {
+  handleChange = async(e) => {
     e.preventDefault();
-    const { gameRecordID } = this.props;
+    const { gameRecordID, token } = this.props;
+    console.log(token)
     console.log('new status:', e.target.value,'id:', gameRecordID); // TODO: modify it to the corresponding ajax request
+    
     this.setState({
       gameStatus: e.target.value,
     });
+    await updateGameRecord(gameRecordID,e.target.value,token)
+    this.props.refreshParent();
+  //   this.setState({
+  //     redirect:true
+  // })
+
   };
   render() {
+    if(this.state.redirect){
+       //return <Redirect to='/games/mygames'/>
+       console.log('helloooo')
+
+    }
     return (
       <select
         style={{

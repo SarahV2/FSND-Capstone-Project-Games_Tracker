@@ -11,15 +11,15 @@ export default class CustomizedList extends Component {
 
   componentDidMount() {
     // if(this.props.currentList){
-    console.log('recived',this.props.currentList)
+    console.log('recieved',this.props.currentList)
    
     // this.setState({ list });
 //   }
 }
   render() {
-    
+    let {token,email}=this.props
     const list = this.props.currentList.map((gameRecord, index) => {
-        return <GameRecord key={index} currentGame={gameRecord} index={(index+1)} />;
+        return <GameRecord refreshParent={this.props.refreshParent()} token={token} email={email} key={index} currentGame={gameRecord} index={(index+1)} />;
       });
     return (
       <div>
