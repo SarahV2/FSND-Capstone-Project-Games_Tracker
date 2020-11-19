@@ -63,12 +63,13 @@ class UserLists extends Component {
 
   componentDidMount() {
     this.setState({
-      gamesList: tempList,
+      // gamesList: tempList,
       redirect:false,
       isLoading:true
     });
       console.log('hello from UserList! ')
     console.log(this.props.email)
+    console.log('got token',this.props.token)
     this.getGames()
 
     
@@ -98,25 +99,25 @@ class UserLists extends Component {
     //if (userGames) {
       // Currently Playing
       const currentlyPlaying = filterGames(userGames, 'currently playing');
-      console.log(currentlyPlaying);
+      //console.log(currentlyPlaying);
 
       // On Hold
       const onHold = filterGames(userGames, 'on hold');
 
-      console.log(onHold);
+      //console.log(onHold);
     //}
 
     // Want to Play
     const wantToPlay = filterGames(userGames, 'want to play');
-    console.log(wantToPlay);
+    //console.log(wantToPlay);
 
     // Dropped
     const dropped = filterGames(userGames, 'dropped');
-    console.log(dropped);
+    //console.log(dropped);
 
     // Finished
     const finished = filterGames(userGames, 'finished');
-    console.log(finished);
+    //console.log(finished);
 
     this.setState({currentlyPlaying,onHold,wantToPlay,dropped,finished})
       }
@@ -135,7 +136,7 @@ class UserLists extends Component {
       return (<img src={Spinner}/>)
     }
     let {token, email}=this.props
-    console.log('want',wantToPlay)
+    //console.log('want',wantToPlay)
     return (
       <div>
         <h3 className='text-left'>Currently Playing ({currentlyPlaying.length})</h3>

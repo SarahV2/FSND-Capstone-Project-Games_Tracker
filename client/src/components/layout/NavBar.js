@@ -5,7 +5,6 @@ import '../../App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const NavBar = () => {
-
   const { user, isAuthenticated } = useAuth0();
   const { loginWithRedirect, logout } = useAuth0();
   const userRole = user && user['http://demozero.net/roles'][0];
@@ -16,29 +15,42 @@ const NavBar = () => {
     <Navbar fixed='top' collapseOnSelect expand='lg' bg='dark' variant='dark'>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse id='responsive-navbar-nav'>
-        
         <Nav className='mr-auto'>
-        <Link to='/games' className='nav-link'>
-          <h5 id='logo'>Video Games Tracker</h5>
-        </Link>
-        
           <Link to='/games' className='nav-link'>
-            Home
+            <h5 id='logo'>Video Games Tracker</h5>
           </Link>
 
-          {!isAuthenticated?'': (!isAdmin?
-            (<Link to='/games/mygames' className='nav-link'>My List</Link>
+          {!isAuthenticated ? (
+            ''
+          ) : !isAdmin ? (
+            <Nav>
+              {' '}
+              <Link to='/' className='nav-link'>
+                Home
+              </Link>
+              <Link to='/games/mygames' className='nav-link'>
+                My List
+              </Link>
+            </Nav>
           ) : (
-            <Link to='/games/new' className='nav-link'>Add Game</Link>
+            <Link to='/games/new' className='nav-link'>
+              Add Game
+            </Link>
+          )}
 
-          ))}
-
-          {isAuthenticated&&isAdmin?
-          <Link  className='nav-link' to='/admin/games'>Manage Games</Link>:''}
+          {isAuthenticated && isAdmin ? (
+            <Link className='nav-link' to='/admin/games'>
+              Manage Games
+            </Link>
+          ) : (
+            ''
+          )}
         </Nav>
         <Nav>
           {!isAuthenticated ? (
-            <Nav.Link onClick={() => loginWithRedirect()}>Login / Register</Nav.Link>
+            <Nav.Link onClick={() => loginWithRedirect()}>
+              Login / Register
+            </Nav.Link>
           ) : (
             <Nav>
               <Nav.Link id='userName' disabled>
@@ -51,12 +63,10 @@ const NavBar = () => {
               </Nav.Link>
             </Nav>
           )}
-
         </Nav>
       </Navbar.Collapse>
     </Navbar>
   );
 };
-
 
 export default NavBar;

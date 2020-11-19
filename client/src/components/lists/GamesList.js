@@ -55,7 +55,7 @@ export default class GamesList extends Component {
     console.log('games list',this.props)
     const displayList = this.state.gamesList.map((game, index) => {
       console.log('current', this.state.gamesList);
-      return <Game key={index} game={game} token={this.props.token} />;
+      return <Game userRecords={this.props.userRecords} key={index} game={game} token={this.props.token} />;
     });
     return (
       <div>

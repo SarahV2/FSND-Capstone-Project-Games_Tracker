@@ -10,7 +10,7 @@ ReactDOM.render(
     domain="video-games-tracker.us.auth0.com"
     clientId="7tJDNbF45ryVnh7tHRe6KoqHbnCOgID2"
     audience='vdtracker'
-    redirectUri="http://localhost:3000/games"
+    redirectUri="http://localhost:3000/"
   >
     <React.StrictMode>
       <App />

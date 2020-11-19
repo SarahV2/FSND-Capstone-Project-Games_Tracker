@@ -34,7 +34,7 @@ export default class Game extends Component {
           />
           <Card.Body>
             <Card.Text>{currentGame.about}</Card.Text>
-            <AddGameRecord token={this.props.token} game={currentGame} />
+            <AddGameRecord userRecords={this.props.userRecords} token={this.props.token} game={currentGame} />
           </Card.Body>
         </Card>
       </div>

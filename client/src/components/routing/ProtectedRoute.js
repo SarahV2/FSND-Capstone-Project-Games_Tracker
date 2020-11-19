@@ -2,6 +2,7 @@ import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Spinner from '../../utils/loading.gif';
+
 let finalToken = '';
 const ProtectedRoute = ({ component: Component ,location, match, ...rest }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
