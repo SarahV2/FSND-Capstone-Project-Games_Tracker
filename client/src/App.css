@@ -133,3 +133,10 @@ body {
 .login-link a:hover {
   color: orange !important;
 }
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:95%;
+}

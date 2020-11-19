@@ -101,6 +101,8 @@ class EditGameForm extends Component {
       return (
         <Row className='justify-content-md-center'>
           <Col xs={12} sm={4} md={4} lg={6}>
+            <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
+
             <Form className='border'>
               <h4>Edit Game Details</h4>
               {showAlerts ? (
@@ -109,8 +111,8 @@ class EditGameForm extends Component {
                   <Alert variant='danger'>{errorMessage}</Alert>
                 </div>
               ) : (
-                ''
-              )}
+                  ''
+                )}
               <Form.Group className='text-left'>
                 <Form.Label>Title</Form.Label>
                 <Form.Control
@@ -226,6 +228,8 @@ class EditGameForm extends Component {
                 </Button>
               </div>
             </Form>
+            <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
+
           </Col>
         </Row>
       );

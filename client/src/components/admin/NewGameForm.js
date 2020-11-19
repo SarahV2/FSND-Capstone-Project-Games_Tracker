@@ -71,8 +71,11 @@ export default class NewGameForm extends Component {
     let { showAlerts, errorMessage } = this.state;
     console.log('got em', this.props.tokenValue);
     return (
+      
+
       <Row className='justify-content-md-center'>
         <Col xs={12} sm={4} md={4} lg={6}>
+        <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
           <Form className='border'>
             <h4>Add a New Game</h4>
             {showAlerts ? (
@@ -200,6 +203,8 @@ export default class NewGameForm extends Component {
               </Button>
             </div>
           </Form>
+          <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
+
         </Col>
       </Row>
     );

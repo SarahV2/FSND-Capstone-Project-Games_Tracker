@@ -16,7 +16,7 @@ const NavBar = () => {
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse id='responsive-navbar-nav'>
         <Nav className='mr-auto'>
-          <Link to='/games' className='nav-link'>
+          <Link to='/' className='nav-link'>
             <h5 id='logo'>Video Games Tracker</h5>
           </Link>
 

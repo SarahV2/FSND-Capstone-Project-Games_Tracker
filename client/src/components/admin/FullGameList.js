@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Container } from 'react-bootstrap';
 import GameDetails from './GameDetails';
 import { getAllGames } from '../../utils/api';
 
@@ -98,25 +98,31 @@ export default class FullGameList extends Component {
       );
     });
     return (
-      <div>
-        <Table striped bordered hover>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Poster</th>
-              <th>Game Title</th>
-              <th>about</th>
-              <th>Release Year</th>
-              <th>Genre(s)</th>
-              <th>Platform(s)</th>
-              <th>Edit Info</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>{list}</tbody>
-        </Table>
+      <Container>
+        <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
+        <h3 className='text-center'>Manage Games</h3>
+        <div className='centered'>
+          <Table striped bordered hover >
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Poster</th>
+                <th>Game Title</th>
+                <th>about</th>
+                <th>Release Year</th>
+                <th>Genre(s)</th>
+                <th>Platform(s)</th>
+                <th>Edit Info</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>{list}</tbody>
+          </Table>
+        </div>
         <div className='pagination-menu'>{this.createPagination()}</div>
-      </div>
+        <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
+
+      </Container>
     );
   }
 }
