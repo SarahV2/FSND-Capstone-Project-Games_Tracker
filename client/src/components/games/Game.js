@@ -20,6 +20,7 @@ export default class Game extends Component {
   }
   render() {
     const currentGame = this.props.game;
+    console.log('in game',this.props)
     return (
       <div className='center-me col-lg-4'>
         <Card style={{ width: '30rem' }} className='card-space'>
@@ -34,7 +35,7 @@ export default class Game extends Component {
           />
           <Card.Body>
             <Card.Text>{currentGame.about}</Card.Text>
-            <AddGameRecord userRecords={this.props.userRecords} token={this.props.token} game={currentGame} />
+            {Array.isArray(this.props.userRecords)?<AddGameRecord userRecords={this.props.userRecords} token={this.props.token} game={currentGame} />:''}
           </Card.Body>
         </Card>
       </div>

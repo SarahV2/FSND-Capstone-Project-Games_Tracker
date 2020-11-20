@@ -13,7 +13,7 @@ import ProtectedRoute from './components/routing/ProtectedRoute';
 import { useAuth0 } from '@auth0/auth0-react';
 import FullGameList from './components/admin/FullGameList';
 import TransitiveComponent from './components/routing/TransitiveComponent';
-import { getUserRecords } from './utils/api';
+import { getUserGames, getUserRecords } from './utils/api';
 import temp from './components/temp';
 import Landing from './components/layout/Landing';
 
@@ -31,8 +31,10 @@ import Landing from './components/layout/Landing';
 // const setToken = (token) => {
 //   finalToken = token;
 // };
-let userRecords = []
+//let userRecords = []
+
 const App = () => {
+
   const {
     isAuthenticated,
     isLoading,
@@ -41,7 +43,7 @@ const App = () => {
   } = useAuth0();
   const [tokeno, setTokenValue] = useState('');
   const [email, setEmail] = useState(0);
-  //const [userRecords, setRecords] = useState([])
+  const [userRecords, setRecords] = useState('')
   const userRole = user && user['http://demozero.net/roles'][0];
   const isGamer = userRole === 'gamer';
   console.log(isGamer);
@@ -53,18 +55,22 @@ const App = () => {
         const token = await getAccessTokenSilently({
           audience: 'vdtracker',
         });
-        console.log(token)
+        //console.log(token)
         setTokenValue(token);
         if (!isLoading) {
           setEmail(user.email);
-          // if (isGamer) {
-          //   getUserRecords(user.email, token).then((data) => {
-          //     if (data.userGames) { //get it from the props
-          //       setRecords(data.userGames)
-          //       console.log('hello?')
-          //     }
-          //   });
-          // }
+         if (isGamer) {
+
+            const recordz = await getUserGames(user.email, token)
+            console.log('recordzzzz', recordz.userGames)
+            setRecords(recordz.userGames)
+            getUserGames(user.email, token).then((data) => {
+              if (data.userGames) { //get it from the props
+                setRecords(data.userGames)
+                console.log('hello?')
+              }
+            });
+         }
         }
       } catch (e) {
         console.error(e);
@@ -79,6 +85,8 @@ const App = () => {
   //   console.log(tokeno);
   // });
   // }
+  // let rec=getRecords()
+  // console.log(rec)
   return (
     <div className='App'>
       <Router>
@@ -86,9 +94,9 @@ const App = () => {
         {/* <div style={{ marginBottom: '5%', height:'100px'}}>{''}</div> */}
 
         <Switch>
-        <Route exact path='/' component={Landing} isAuthenticated={isAuthenticated} />
+          <Route exact path='/' component={Landing} isAuthenticated={isAuthenticated} />
           <Route exact path='/ooo' component={temp} />
-          <PrivateRoute exact path='/games' component={GamesList} token={tokeno} email={email}
+          <PrivateRoute exact path='/games' component={GamesList} token={tokeno} email={email} userRecords={userRecords}
           />
           <PrivateRoute exact path='/home' component={GamesList} token={tokeno} email={email}
           />
@@ -133,11 +141,14 @@ const App = () => {
   );
 };
 
-const setRecords = (records) => {
-  userRecords = records;
-  console.log('well', records)
-  console.log('yay invoked!')
-}
+// const setRecords = (records) => {
+//   userRecords = records;
+//   console.log('well', records)
+//   console.log('yay invoked!')
+// }
 
+// const getRecords=()=>{
+//   return userRecords
+// }
 
 export default App;

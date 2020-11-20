@@ -12,8 +12,8 @@ export const addGameRecord=(gameID,userEmail)=>{
 
 }
 
-export const checkAddStatus = (list, currentGameID) => {
-  const filteredList = list.filter((record) => {
+export const checkAddStatus = (arr, currentGameID) => {
+  const filteredList = arr.filter((record) => {
     console.log('hello current game',currentGameID)
     return record.game_id === currentGameID;
   });

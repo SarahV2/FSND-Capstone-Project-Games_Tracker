@@ -328,6 +328,35 @@ def deleteRecord(token,record_id):
 
 # -----------------------------------------------------------------
 
+# GET User's games ids
+
+
+@app.route("/api/user/records/games", methods=["POST"])
+@requires_auth("get:records")
+def getUserGamesIDs(token):
+    body = request.get_json()
+    user_email = body.get("email", None)
+    if user_email is None:
+        abort(400)
+    currentUserID = getUserID(user_email)
+
+    records = (
+        db.session.query(GameRecord)
+        .join(User, GameRecord.user_id == currentUserID)
+        .join(Game)
+        .all()
+    )
+    allRecords = []
+    for record in records:
+        games = {
+            "game_id": record.game_id,
+        }
+        allRecords.append(games)
+
+    return (
+        jsonify({"success": True, "found": currentUserID, "userGames": allRecords}),
+        200,
+    )
 
 # Error Handling
 

@@ -220,3 +220,29 @@ export const deleteUserRecord=(recordID, token)=>{
         console.log(error)
       });
 }
+
+
+  //--------------------------------------------------- User's Records ----------------------------------------------
+
+// Get an array containing all user records
+// GET '/api/games'
+export const getUserGames = (email,token) => {
+  return fetch(`${link}/user/records/games`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({email})
+  }).then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+        return data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+};
