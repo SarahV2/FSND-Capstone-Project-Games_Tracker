@@ -12,24 +12,9 @@ import ProtectedRoute from './components/routing/ProtectedRoute';
 import { useAuth0 } from '@auth0/auth0-react';
 import FullGameList from './components/admin/FullGameList';
 import TransitiveComponent from './components/routing/TransitiveComponent';
-import {getUserRecords } from './utils/api';
+import { getUserRecords } from './utils/api';
 import Landing from './components/layout/Landing';
 
-
-// let finalToken = '';
-// const getToken = async (getAccessTokenSilently) => {
-//   const token = await getAccessTokenSilently({
-//     audience: 'vdtracker',
-//     claim: 'openid profile email',
-//   });
-
-//   return token;
-// };
-
-// const setToken = (token) => {
-//   finalToken = token;
-// };
-//let userRecords = []
 
 const App = () => {
 
@@ -39,71 +24,47 @@ const App = () => {
     getAccessTokenSilently,
     user,
   } = useAuth0();
+
+  if (!isLoading && !isAuthenticated) {
+    localStorage.removeItem('userRecords')
+  }
   const [tokeno, setTokenValue] = useState('');
   const [email, setEmail] = useState(0);
   const [userRecords, setRecords] = useState('')
   const userRole = user && user['http://demozero.net/roles'][0];
   const isGamer = userRole === 'gamer';
-  // console.log(isGamer);
 
-  //if (isAuthenticated) {
   useEffect(() => {
     (async () => {
       try {
         const token = await getAccessTokenSilently({
           audience: 'vdtracker',
         });
-        //console.log(token)
         setTokenValue(token);
         if (!isLoading) {
           setEmail(user.email);
-          let arr=[]
-         if (isGamer) {
-          // localStorage.setItem('userRecords', JSON.stringify(arr));
-
-            //const recordz = await getUserRecords(user.email, token)
-            //console.log('recordzzzz', recordz.userGames)
-            //setRecords(recordz.userGames)
-            // localStorage.setItem('userRecords', JSON.stringify(recordz.userGames));
-            
+          if (isGamer) {
             getUserRecords(user.email, token).then((data) => {
               if (data.userGames) { //get it from the props
                 setRecords(data.userGames)
                 localStorage.setItem('userRecords', JSON.stringify(data.userGames));
-
-            //     console.log('hello?')
               }
-             });
-         }
+            });
+          }
         }
       } catch (e) {
         console.error(e);
       }
     })();
   }, [getAccessTokenSilently]);
-
-  // getToken(getAccessTokenSilently).then((data) => {
-  //   //setToken(data);
-  //   setTokenValue(data);
-  //   // setEmail(user.email);
-  //   console.log(tokeno);
-  // });
-  // }
-  // let rec=getRecords()
-  // console.log(rec)
   return (
     <div className='App'>
       <Router>
         <NavBar />
-        {/* <div style={{ marginBottom: '5%', height:'100px'}}>{''}</div> */}
-
         <Switch>
           <Route exact path='/' component={Landing} isAuthenticated={isAuthenticated} />
-          {/* <Route exact path='/ooo' component={temp} /> */}
           <PrivateRoute exact path='/games' component={GamesList} token={tokeno} email={email} userRecords={userRecords}
           />
-          {/* <PrivateRoute exact path='/home' component={GamesList} token={tokeno} email={email}
-          /> */}
           <ProtectedRoute
             exact
             path='/games/new'
@@ -138,22 +99,10 @@ const App = () => {
 
           />
         </Switch>
-        {/* <div style={{ marginTop: '5%'}}>{''}</div> */}
-
         <Footer />
       </Router>
     </div>
   );
 };
-
-// const setRecords = (records) => {
-//   userRecords = records;
-//   console.log('well', records)
-//   console.log('yay invoked!')
-// }
-
-// const getRecords=()=>{
-//   return userRecords
-// }
 
 export default App;

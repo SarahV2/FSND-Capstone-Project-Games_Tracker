@@ -8,7 +8,6 @@ const NavBar = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
   const { loginWithRedirect, logout } = useAuth0();
   const userRole = user && user['http://demozero.net/roles'][0];
-  //console.log(userRole);
   const isAdmin = (userRole === 'admin');
 
   if(!isLoading&&!isAuthenticated){
@@ -19,7 +18,7 @@ const NavBar = () => {
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
       <Navbar.Collapse  id='responsive-navbar-nav'>
         <Nav className='mr-auto'>
-          <Link to='//' className='nav-link'>
+          <Link to='/' className='nav-link'>
             <h5 id='logo'>Video Games Tracker</h5>
           </Link>
 
