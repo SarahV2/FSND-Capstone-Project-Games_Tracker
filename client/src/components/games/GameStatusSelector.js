@@ -22,7 +22,7 @@ export default class GameStatusSelector extends Component {
       gameStatus: e.target.value,
     });
     await updateGameRecord(gameRecordID,e.target.value,token)
-    this.props.refreshParent();
+    // this.props.refreshParent();
   //   this.setState({
   //     redirect:true
   // })

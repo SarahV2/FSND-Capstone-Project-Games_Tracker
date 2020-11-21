@@ -36,8 +36,8 @@ def paginate_games(request, selection):
 @app.route("/api/games", methods=["GET"])
 def get_games():
     games_list = Game.query.all()
-    if len(games_list) == 0:
-        abort(404)
+    # if len(games_list) == 0:
+    #     abort(404)
     current_list = paginate_games(request, games_list)
 
     # games = [game.format() for game in games]

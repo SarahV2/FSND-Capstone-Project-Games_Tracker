@@ -7,7 +7,7 @@ import { getUserGames, getUserRecords } from '../../utils/api';
 let finalToken = '';
 let userEmail=''
 //let userRecords=[]
-const PrivateRoute = ({ component: Component,location, match, token, userRecords, ...rest }) => {
+const PrivateRoute = ({ component: Component,location, match, ...rest }) => {
   const { user, isAuthenticated, isLoading } = useAuth0();
     // const { getAccessTokenSilently } = useAuth0();
     // getToken(getAccessTokenSilently).then((data) => {
@@ -24,37 +24,37 @@ const PrivateRoute = ({ component: Component,location, match, token, userRecords
   //console.log(isGamer);
 
 
-  useEffect(() => {
-    (async () => {
-      try {
-        // const token = await getAccessTokenSilently({
-        //   audience: 'vdtracker',
-        // });
-        //console.log(token)
-        //setTokenValue(token);
-        // if (!isLoading) {
-        //   //setEmail(user.email);
-        //   if (isGamer) {
-        //     const recordz = await getUserGames(user.email, token)
-        //     console.log('recordzzzz', recordz.userGames)
-        //     setRecords(recordz.userGames)
+  // useEffect(() => {
+  //   (async () => {
+  //     try {
+  //       // const token = await getAccessTokenSilently({
+  //       //   audience: 'vdtracker',
+  //       // });
+  //       //console.log(token)
+  //       //setTokenValue(token);
+  //       // if (!isLoading) {
+  //       //   //setEmail(user.email);
+  //       //   if (isGamer) {
+  //       //     const recordz = await getUserGames(user.email, token)
+  //       //     console.log('recordzzzz', recordz.userGames)
+  //       //     setRecords(recordz.userGames)
 
-        //     // const recordz = await getUserGames(user.email, token)
-        //     // console.log('recordzzzz', recordz.userGames)
-        //     // setRecords(recordz.userGames)
-        //     // getUserGames(user.email, token).then((data) => {
-        //     //   if (data.userGames) { //get it from the props
-        //     //     setRecords(data.userGames)
-        //     //     console.log('hello?')
-        //     //   }
-        //     // });
-        //   }
-        // }
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  }, []);
+  //       //     // const recordz = await getUserGames(user.email, token)
+  //       //     // console.log('recordzzzz', recordz.userGames)
+  //       //     // setRecords(recordz.userGames)
+  //       //     // getUserGames(user.email, token).then((data) => {
+  //       //     //   if (data.userGames) { //get it from the props
+  //       //     //     setRecords(data.userGames)
+  //       //     //     console.log('hello?')
+  //       //     //   }
+  //       //     // });
+  //       //   }
+  //       // }
+  //     } catch (e) {
+  //       console.error(e);
+  //     }
+  //   })();
+  // }, []);
 
 
 
@@ -77,12 +77,12 @@ const PrivateRoute = ({ component: Component,location, match, token, userRecords
   return (
     <Route
       render={(props) =>
-        !isLoading&& !isGamer ? (
+        !isLoading&& !isAuthenticated ? (
           <Redirect to='/' />
         ) :
         props.token!=''? 
         (
-          <Component userRecords={userRecords} token={token} {...props} {...rest} />
+          <Component {...props} {...rest} />
         ) 
         : (<img src={Spinner} />)
       }

@@ -3,9 +3,9 @@ import { Redirect, Route } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import Spinner from '../../utils/loading.gif';
 
-let finalToken = '';
+//let finalToken = '';
 const ProtectedRoute = ({ component: Component ,location, match, ...rest }) => {
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { user, isLoading } = useAuth0();
  // const { getAccessTokenSilently } = useAuth0();
 //console.log(location)
 
@@ -15,13 +15,13 @@ const ProtectedRoute = ({ component: Component ,location, match, ...rest }) => {
 
   const userRole = user && user['http://demozero.net/roles'][0];
   const isAdmin = userRole === 'admin';
-  console.log(isAdmin);
+  //console.log(isAdmin);
   //console.log('all state',props)
 
   return (
     <Route
       render={(props) =>
-        !isLoading && !isAuthenticated ? (
+        !isLoading && !isAdmin ? (
           <Redirect to='/games' />) 
           :props.token != '' ? 
           (<Component {...props} {...rest } />)

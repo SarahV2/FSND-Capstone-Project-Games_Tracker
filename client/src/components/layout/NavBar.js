@@ -1,22 +1,25 @@
-import React, { Component, useState } from 'react';
+import React from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import '../../App.css';
 import { useAuth0 } from '@auth0/auth0-react';
 
 const NavBar = () => {
-  const { user, isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const { loginWithRedirect, logout } = useAuth0();
   const userRole = user && user['http://demozero.net/roles'][0];
-  console.log(userRole);
-  const isAdmin = userRole === 'admin';
+  //console.log(userRole);
+  const isAdmin = (userRole === 'admin');
 
+  if(!isLoading&&!isAuthenticated){
+    localStorage.removeItem('userRecords')
+  }
   return (
     <Navbar fixed='top' collapseOnSelect expand='lg' bg='dark' variant='dark'>
       <Navbar.Toggle aria-controls='responsive-navbar-nav' />
-      <Navbar.Collapse id='responsive-navbar-nav'>
+      <Navbar.Collapse  id='responsive-navbar-nav'>
         <Nav className='mr-auto'>
-          <Link to='/' className='nav-link'>
+          <Link to='//' className='nav-link'>
             <h5 id='logo'>Video Games Tracker</h5>
           </Link>
 
@@ -57,7 +60,9 @@ const NavBar = () => {
                 {user.email}
               </Nav.Link>
               <Nav.Link
-                onClick={() => logout({ returnTo: window.location.origin })}
+                onClick={() => {;
+                logout({ returnTo: window.location.origin })
+                }}
               >
                 Logout
               </Nav.Link>

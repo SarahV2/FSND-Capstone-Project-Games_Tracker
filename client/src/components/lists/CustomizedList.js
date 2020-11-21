@@ -10,11 +10,11 @@ export default class CustomizedList extends Component {
   };
 
   componentDidMount() {
-    // if(this.props.currentList){
+    //  if(this.props.currentList){
     console.log('recieved',this.props.currentList)
    
-    // this.setState({ list });
-//   }
+  //    this.setState({ list:this.props.currentList });
+  //  }
 }
   render() {
     let {token,email}=this.props

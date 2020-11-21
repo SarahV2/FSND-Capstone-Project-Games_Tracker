@@ -62,14 +62,14 @@ class EditGameForm extends Component {
     }
   };
 
-  handleSubmit = (e) => {
+  handleSubmit = async(e) => {
     e.preventDefault();
     const { title, imgSrc, about, releaseYear, genres, platforms } = this.state;
     if (
-      title == '' ||
-      imgSrc == '' ||
-      about == '' ||
-      releaseYear == '' ||
+      title === '' ||
+      imgSrc === '' ||
+      about === '' ||
+      releaseYear === '' ||
       genres.length === 0 ||
       platforms.length === 0
     ) {
@@ -86,16 +86,16 @@ class EditGameForm extends Component {
       genres,
       platforms,
     };
-    console.log(updatedGameInfo);
+    // console.log(updatedGameInfo);
     const { gameID } = this.state;
     this.setState({ showAlerts: false });
-    updateGame(gameID, updatedGameInfo, this.props.token);
+    await updateGame(gameID, updatedGameInfo, this.props.token);
   };
 
   render() {
     let { showAlerts, errorMessage } = this.state;
     if (this.state.loading) {
-      return <img src={Spinner} />;
+      return <img src={Spinner} alt='loading ...' />;
     }
     if (!this.state.notFound) {
       return (
@@ -174,7 +174,6 @@ class EditGameForm extends Component {
                 >
                   <option>Action</option>
                   <option>Adventure</option>
-                  <option>Battle Royal</option>
                   <option>RPG</option>
                   <option>Sports</option>
                   <option>Racing</option>

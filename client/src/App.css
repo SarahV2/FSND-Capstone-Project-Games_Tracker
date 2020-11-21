@@ -140,3 +140,24 @@ body {
   align-items: center;
   width:95%;
 }
+
+.genres, .platforms{
+  padding:5px;
+  color:white !important;
+  border-radius: 5px;
+}
+
+.genres{
+  background-color: rgba(0,0,200,0.5);
+
+}
+.platforms{
+  background-color: rgba(200,0,0,0.3);
+  margin-top: 800px !important;
+
+}
+.spaced{
+  padding-top:5px;
+  padding-bottom:5px;
+
+}

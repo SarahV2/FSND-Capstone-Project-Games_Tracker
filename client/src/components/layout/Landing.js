@@ -28,7 +28,7 @@ const Landing = () => {
                         Keep track of the awesome games you play!
           </p>
                     <div className="login-link">
-                        <Link onClick={() => loginWithRedirect()}>Login / Register</Link>
+                        <Link to='/' onClick={() => loginWithRedirect()}>Login / Register</Link>
 
                     </div>
                 </div>

@@ -31,7 +31,7 @@ export default class GameRecord extends Component {
         <td className='poster' style={{ width: '200px' }}>
           <img
             style={{ width: '200px', height: '250px' }}
-            src={placeholderImgSrc}
+            src={currentGame.imgSrc?currentGame.imgSrc:placeholderImgSrc}
           />
         </td>
         <td>{currentGame.title}</td>

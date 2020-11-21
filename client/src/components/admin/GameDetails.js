@@ -15,18 +15,15 @@ const placeholderImgSrc =
   'https://upload.wikimedia.org/wikipedia/en/f/fc/MediEvil_Box_art_cropped.png';
 
 export default class GameDetails extends Component {
-    handleDeleteGame = (e) => {
+    handleDeleteGame = async(e) => {
         e.preventDefault();
         const { currentGame } = this.props;
-        console.log('deleted', currentGame.id); // TODO: modify it to the corresponding ajax request
-        deleteGame(currentGame.id,this.props.token)
+        await deleteGame(currentGame.id,this.props.token)
       };
   render() {
-    console.log('key', this.props.index);
     let { currentGame } = this.props;
     return (
       <tr>
-        <td>{this.props.index}</td>
         <td className='poster' style={{ width: '200px' }}>
           <img
             style={{ width: '200px', height: '250px' }}
@@ -34,7 +31,6 @@ export default class GameDetails extends Component {
           />
         </td>
         <td>{currentGame.title}</td>
-        <td>{currentGame.about}</td>
         <td>{currentGame.release_year}</td>
         <td>{currentGame.genres.join(' , ')}</td>
         <td>{currentGame.platforms.join(' , ')}</td>
@@ -46,16 +42,11 @@ export default class GameDetails extends Component {
                 currentGameID: currentGame.id,
               },
             }}
-          >
-              {/* <div> */}
-              
+          >              
             <FontAwesomeIcon
-            //   onClick={(e) => this.handleEditGameInfo(e)}
               icon='edit'
             />
-            {/* </div> */}
           </Link>
-          
         </td>
         <td>
           {' '}

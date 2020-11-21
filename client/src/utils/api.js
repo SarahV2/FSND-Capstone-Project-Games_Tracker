@@ -25,7 +25,7 @@ export const addGame = (gameDetails, token) => {
       return response.json();
     })
     .then((jsonResponse) => {
-    //   window.location.href = `/admin/games`;
+       window.location.href = `/admin/games`;
     })
     .catch((error) => {
       console.log(error);
@@ -44,7 +44,7 @@ export const getAllGames = (page) => {
     return response
       .json()
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         return data;
       })
       .catch((err) => {
@@ -85,7 +85,7 @@ return fetch(`${link}/games/${gameID}`, {
     return response
       .json()
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         return data;
       })
       .catch((err) => {
@@ -192,7 +192,7 @@ export const updateGameRecord = (recordID,status,token) => {
       return response.json();
     })
     .then((jsonResponse) => {
-      //window.location.href = `/games/mygames`;
+      window.location.href = `/games/mygames`;
     })
     .catch((error) => {
       console.log(error);

@@ -7,14 +7,12 @@ import Footer from './components/layout/Footer';
 import NewGameForm from './components/admin/NewGameForm';
 import EditGameForm from './components/admin/EditGameForm';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AdminDashboard from './components/admin/AdminDashboard';
 import PrivateRoute from './components/routing/PrivateRoute';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 import { useAuth0 } from '@auth0/auth0-react';
 import FullGameList from './components/admin/FullGameList';
 import TransitiveComponent from './components/routing/TransitiveComponent';
-import { getUserGames, getUserRecords } from './utils/api';
-import temp from './components/temp';
+import {getUserRecords } from './utils/api';
 import Landing from './components/layout/Landing';
 
 
@@ -46,7 +44,7 @@ const App = () => {
   const [userRecords, setRecords] = useState('')
   const userRole = user && user['http://demozero.net/roles'][0];
   const isGamer = userRole === 'gamer';
-  console.log(isGamer);
+  // console.log(isGamer);
 
   //if (isAuthenticated) {
   useEffect(() => {
@@ -59,17 +57,23 @@ const App = () => {
         setTokenValue(token);
         if (!isLoading) {
           setEmail(user.email);
+          let arr=[]
          if (isGamer) {
+          // localStorage.setItem('userRecords', JSON.stringify(arr));
 
-            const recordz = await getUserGames(user.email, token)
-            console.log('recordzzzz', recordz.userGames)
-            setRecords(recordz.userGames)
-            getUserGames(user.email, token).then((data) => {
+            //const recordz = await getUserRecords(user.email, token)
+            //console.log('recordzzzz', recordz.userGames)
+            //setRecords(recordz.userGames)
+            // localStorage.setItem('userRecords', JSON.stringify(recordz.userGames));
+            
+            getUserRecords(user.email, token).then((data) => {
               if (data.userGames) { //get it from the props
                 setRecords(data.userGames)
-                console.log('hello?')
+                localStorage.setItem('userRecords', JSON.stringify(data.userGames));
+
+            //     console.log('hello?')
               }
-            });
+             });
          }
         }
       } catch (e) {
@@ -95,11 +99,11 @@ const App = () => {
 
         <Switch>
           <Route exact path='/' component={Landing} isAuthenticated={isAuthenticated} />
-          <Route exact path='/ooo' component={temp} />
+          {/* <Route exact path='/ooo' component={temp} /> */}
           <PrivateRoute exact path='/games' component={GamesList} token={tokeno} email={email} userRecords={userRecords}
           />
-          <PrivateRoute exact path='/home' component={GamesList} token={tokeno} email={email}
-          />
+          {/* <PrivateRoute exact path='/home' component={GamesList} token={tokeno} email={email}
+          /> */}
           <ProtectedRoute
             exact
             path='/games/new'
@@ -117,6 +121,7 @@ const App = () => {
             component={UserLists}
             token={tokeno}
             email={email}
+            userRecords={userRecords}
           />
           <PrivateRoute
             exact

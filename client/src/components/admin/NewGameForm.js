@@ -15,12 +15,12 @@ export default class NewGameForm extends Component {
 
   handleChange = (e) => {
     const currentFormField = e.target.name;
-    if (currentFormField == 'genres' || currentFormField == 'platforms') {
+    if (currentFormField === 'genres' || currentFormField === 'platforms') {
       let value = Array.from(
         e.target.selectedOptions,
         (option) => option.value
       );
-      if (currentFormField == 'genres') {
+      if (currentFormField === 'genres') {
         this.setState({ genres: value });
       } else {
         this.setState({ platforms: value });
@@ -32,14 +32,14 @@ export default class NewGameForm extends Component {
     }
   };
 
-  resetFields(){
+  resetFields() {
     this.setState({
-      title:'',
-      about:'',
-      imgSrc:'',
-      releaseYear:'',
-      genres:[],
-      platforms:[]
+      title: '',
+      about: '',
+      imgSrc: '',
+      releaseYear: '',
+      genres: [],
+      platforms: []
     })
   }
   handleSubmit = (e) => {
@@ -69,13 +69,12 @@ export default class NewGameForm extends Component {
 
   render() {
     let { showAlerts, errorMessage } = this.state;
-    console.log('got em', this.props.tokenValue);
     return (
-      
+
 
       <Row className='justify-content-md-center'>
         <Col xs={12} sm={4} md={4} lg={6}>
-        <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
+          <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
           <Form className='border'>
             <h4>Add a New Game</h4>
             {showAlerts ? (
@@ -84,8 +83,8 @@ export default class NewGameForm extends Component {
                 <Alert variant='danger'>{errorMessage}</Alert>
               </div>
             ) : (
-              ''
-            )}
+                ''
+              )}
             <Form.Group className='text-left'>
               <Form.Label>Title</Form.Label>
               <Form.Control
@@ -112,7 +111,6 @@ export default class NewGameForm extends Component {
             <Form.Group className='text-left'>
               <Form.Label>About</Form.Label>
               <Form.Control
-                // type='text'
                 name='about'
                 placeholder='More Info about the game'
                 as='textarea'
@@ -148,7 +146,6 @@ export default class NewGameForm extends Component {
               >
                 <option>Action</option>
                 <option>Adventure</option>
-                <option>Battle Royal</option>
                 <option>RPG</option>
                 <option>Sports</option>
                 <option>Racing</option>
@@ -204,7 +201,6 @@ export default class NewGameForm extends Component {
             </div>
           </Form>
           <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
-
         </Col>
       </Row>
     );
