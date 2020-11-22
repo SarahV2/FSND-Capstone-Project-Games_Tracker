@@ -55,7 +55,7 @@ def get_token_auth_header():
             {"code": "invalid header", "description": "Not a valid bearer token"}, 401
         )
     token = auth_string[1]
-    print(token)
+    # print(token)
     return token
 
 

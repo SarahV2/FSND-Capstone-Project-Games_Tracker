@@ -1,7 +1,7 @@
 const link = 'http://localhost:5000/api';
 
 
-  //--------------------------------------------------- Game ----------------------------------------------
+//--------------------------------------------------- Game ----------------------------------------------
 
 // Add a new game
 // POST '/api/games'
@@ -25,7 +25,7 @@ export const addGame = (gameDetails, token) => {
       return response.json();
     })
     .then((jsonResponse) => {
-       window.location.href = `/admin/games`;
+      window.location.href = `/admin/games`;
     })
     .catch((error) => {
       console.log(error);
@@ -55,28 +55,28 @@ export const getAllGames = (page) => {
 
 // Delete a game using its ID
 // DELETE '/api/games/<game_id>'
-export const deleteGame=(gameID, token)=>{
-    fetch(`${link}/games/${gameID}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-      })
-        .then((response) => {
-          console.log('game successfully deleted', gameID);
-          window.location.href = `/admin/games`;
+export const deleteGame = (gameID, token) => {
+  fetch(`${link}/games/${gameID}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log('game successfully deleted', gameID);
+      window.location.href = `/admin/games`;
 
-        })
-        .catch((error) => {
-          console.log(error)
-        });
+    })
+    .catch((error) => {
+      console.log(error)
+    });
 }
 
 // Get a game by ID
 // GET '/api/games/<game_id>
 export const getGame = (gameID) => {
-return fetch(`${link}/games/${gameID}`, {
+  return fetch(`${link}/games/${gameID}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -97,45 +97,45 @@ return fetch(`${link}/games/${gameID}`, {
 
 // Update game's info
 // PATCH '/api/games/<game_id>
-export const updateGame = (gameID,gameDetails, token) => {
-    fetch(`${link}/games/${gameID}`, {
-      method: 'PATCH',
-      body: JSON.stringify({
-        title: gameDetails.title,
-        about: gameDetails.about,
-        imgSrc: gameDetails.imgSrc,
-        releaseYear: gameDetails.releaseYear,
-        genres: gameDetails.genres,
-        platforms: gameDetails.platforms,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
+export const updateGame = (gameID, gameDetails, token) => {
+  fetch(`${link}/games/${gameID}`, {
+    method: 'PATCH',
+    body: JSON.stringify({
+      title: gameDetails.title,
+      about: gameDetails.about,
+      imgSrc: gameDetails.imgSrc,
+      releaseYear: gameDetails.releaseYear,
+      genres: gameDetails.genres,
+      platforms: gameDetails.platforms,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      return response.json();
     })
-      .then((response) => {
-        return response.json();
-      })
-      .then((jsonResponse) => {
-        window.location.href = `/admin/games`;
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
+    .then((jsonResponse) => {
+      window.location.href = `/admin/games`;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
-  //--------------------------------------------------- User's Records ----------------------------------------------
+//--------------------------------------------------- User's Records ----------------------------------------------
 
 // Get an array containing all user records
 // GET '/api/games'
-export const getUserRecords = (email,token) => {
+export const getUserRecords = (email, token) => {
   return fetch(`${link}/user/records`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    body: JSON.stringify({email})
+    body: JSON.stringify({ email })
   }).then((response) => {
     return response
       .json()
@@ -151,7 +151,7 @@ export const getUserRecords = (email,token) => {
 
 // Add a game to the user's list
 // POST '/api/user/games'
-export const addGameToList = (gameID,email, token) => {
+export const addGameToList = (gameID, email, token) => {
   fetch(`${link}/user/games`, {
     method: 'POST',
     body: JSON.stringify({
@@ -163,95 +163,98 @@ export const addGameToList = (gameID,email, token) => {
       'Authorization': `Bearer ${token}`,
     },
   })
-  .then((response) => {
-    return response
-      .json()
-      .then((data) => {
-        console.log(data);
-       let currentList=JSON.parse(localStorage.getItem('userRecords'));
-       currentList.push(data.gameRecord)
-        localStorage.setItem('userRecords', JSON.stringify(currentList));
-       // window.location.href = `/games`;
-       window.location.href = `/games/mygames`;
+    .then((response) => {
+      return response
+        .json()
+        .then((data) => {
+          console.log(data);
+          let currentList = JSON.parse(localStorage.getItem('userRecords'));
+          currentList.push(data.gameRecord)
+          localStorage.setItem('userRecords', JSON.stringify(currentList));
+          // window.location.href = `/games`;
+          window.location.href = `/games/mygames`;
 
-        //return data;
-      })
-    .catch((error) => {
-      console.log(error);
-    });
-})}
+          //return data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+}
 
 
 
 // Update a user's record
 // PATCH '/api/user/records/<record_id>
-export const updateGameRecord = (recordID,status,email,token) => {
- return fetch(`${link}/user/records/${recordID}`, {
+export const updateGameRecord = (recordID, status, email, token) => {
+  return fetch(`${link}/user/records/${recordID}`, {
     method: 'PATCH',
     body: JSON.stringify({
-      status,email}),
+      status, email
+    }),
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
   })
-  .then((response) => {
-    return response
-      .json()
-      .then((data) => {
-        console.log(data);
-        let currentList=JSON.parse(localStorage.getItem('userRecords'));
-        const filteredRecords = currentList.filter((record) => record.id !== recordID);
-        filteredRecords.push(data.updatedRecord)
-        console.log(data.updatedRecord)
-        localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
-        window.location.href = `/games/mygames`;
-        //return data;
-      })
-    .catch((error) => {
-      console.log(error);
-    });
-})}
+    .then((response) => {
+      return response
+        .json()
+        .then((data) => {
+          console.log(data);
+          let currentList = JSON.parse(localStorage.getItem('userRecords'));
+          const filteredRecords = currentList.filter((record) => record.id !== recordID);
+          filteredRecords.push(data.updatedRecord)
+          console.log(data.updatedRecord)
+          localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
+          window.location.href = `/games/mygames`;
+          //return data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    })
+}
 
 
 
 // Delete a record using its ID and the user's email
 // DELETE '/api/games/<game_id>'
-export const deleteUserRecord=(recordID, token)=>{
+export const deleteUserRecord = (recordID, token) => {
   fetch(`${link}/user/records/${recordID}`, {
-      method: 'DELETE',
-      headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-    })
-      .then((response) => {
-        console.log('game successfully deleted', recordID);
-        let currentList=JSON.parse(localStorage.getItem('userRecords'));
-        const filteredRecords = currentList.filter((record) => record.id !== recordID);
-        console.log(filteredRecords)
-        localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
-        window.location.href = `/games/mygames`;
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+  })
+    .then((response) => {
+      console.log('game successfully deleted', recordID);
+      let currentList = JSON.parse(localStorage.getItem('userRecords'));
+      const filteredRecords = currentList.filter((record) => record.id !== recordID);
+      console.log(filteredRecords)
+      localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
+      window.location.href = `/games/mygames`;
 
-      })
-      .catch((error) => {
-        console.log(error)
-      });
+    })
+    .catch((error) => {
+      console.log(error)
+    });
 }
 
 
-  //--------------------------------------------------- User's Records ----------------------------------------------
+//--------------------------------------------------- User's Records ----------------------------------------------
 
 // Get an array containing all user records
 // GET '/api/games'
-export const getUserGames = (email,token) => {
+export const getUserGames = (email, token) => {
   return fetch(`${link}/user/records/games`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    body: JSON.stringify({email})
+    body: JSON.stringify({ email })
   }).then((response) => {
     return response
       .json()

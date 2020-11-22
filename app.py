@@ -38,11 +38,8 @@ def paginate_games(request, selection):
 @app.route("/api/games", methods=["GET"])
 def get_games():
     games_list = Game.query.all()
-    # if len(games_list) == 0:
-    #     abort(404)
-    current_list = paginate_games(request, games_list)
 
-    # games = [game.format() for game in games]
+    current_list = paginate_games(request, games_list)
 
     return jsonify({"success": True, "games": current_list, "total_games": len(games_list)}), 200
 
@@ -350,7 +347,7 @@ def deleteRecord(token, record_id):
     # user_email = body.get("email", None)
 
     # if user_email is None:
-    # abort(400)
+    #     abort(400)
     # currentUserID = getUserID(user_email)
     record = GameRecord.query.filter(GameRecord.id == record_id).one_or_none()
     if record is None:

@@ -21,12 +21,12 @@ class UserLists extends Component {
   };
 
   componentDidMount() {
-    this.setState({
-      redirect: false,
-      isLoading: true
-    });
+    // this.setState({
+    //   redirect: false,
+    //   isLoading: true
+    // });
 
-
+    console.log(this.props.token)
     this.getGames()
   }
 
