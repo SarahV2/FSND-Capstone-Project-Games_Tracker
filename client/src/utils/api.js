@@ -163,41 +163,55 @@ export const addGameToList = (gameID,email, token) => {
       'Authorization': `Bearer ${token}`,
     },
   })
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsonResponse) => {
-       //window.location.href = `/games/mygames`; use <Redirect /> instead
-    })
+  .then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+       let currentList=JSON.parse(localStorage.getItem('userRecords'));
+       currentList.push(data.gameRecord)
+        localStorage.setItem('userRecords', JSON.stringify(currentList));
+       // window.location.href = `/games`;
+       window.location.href = `/games/mygames`;
+
+        //return data;
+      })
     .catch((error) => {
       console.log(error);
     });
-};
+})}
 
 
 
 // Update a user's record
 // PATCH '/api/user/records/<record_id>
-export const updateGameRecord = (recordID,status,token) => {
-  fetch(`${link}/user/records/${recordID}`, {
+export const updateGameRecord = (recordID,status,email,token) => {
+ return fetch(`${link}/user/records/${recordID}`, {
     method: 'PATCH',
     body: JSON.stringify({
-      status}),
+      status,email}),
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
   })
-    .then((response) => {
-      return response.json();
-    })
-    .then((jsonResponse) => {
-      window.location.href = `/games/mygames`;
-    })
+  .then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+        let currentList=JSON.parse(localStorage.getItem('userRecords'));
+        const filteredRecords = currentList.filter((record) => record.id !== recordID);
+        filteredRecords.push(data.updatedRecord)
+        console.log(data.updatedRecord)
+        localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
+        window.location.href = `/games/mygames`;
+        //return data;
+      })
     .catch((error) => {
       console.log(error);
     });
-};
+})}
 
 
 
@@ -213,7 +227,11 @@ export const deleteUserRecord=(recordID, token)=>{
     })
       .then((response) => {
         console.log('game successfully deleted', recordID);
-        //window.location.href = `/games/mygames`;
+        let currentList=JSON.parse(localStorage.getItem('userRecords'));
+        const filteredRecords = currentList.filter((record) => record.id !== recordID);
+        console.log(filteredRecords)
+        localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
+        window.location.href = `/games/mygames`;
 
       })
       .catch((error) => {

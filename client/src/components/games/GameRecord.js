@@ -20,10 +20,10 @@ export default class GameRecord extends Component {
     const { currentGame, email, token } = this.props;
     await deleteUserRecord(currentGame.id,token)
     console.log('deleted', currentGame.id, email, token); // TODO: modify it to the corresponding ajax request
-    this.props.refreshParent()
+    //this.props.refreshParent()
   };
   render() {
-    console.log('key', this.props.index);
+    // console.log('key', this.props.index);
     let { currentGame } = this.props;
     return (
       <tr>
@@ -39,7 +39,7 @@ export default class GameRecord extends Component {
         <td>{currentGame.genres.join(' , ')}</td>
         <td>{currentGame.platforms.join(' , ')}</td>
         <td>
-          <GameStatusSelector refreshParent={this.props.refreshParent} defaultValue={currentGame.status} token={this.props.token} gameRecordID={currentGame.id}/>
+          <GameStatusSelector refreshParent={this.props.refreshParent} defaultValue={currentGame.status} token={this.props.token} gameRecordID={currentGame.id} email={this.props.email}/>
         </td>
         <td>
           {' '}

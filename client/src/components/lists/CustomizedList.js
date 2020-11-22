@@ -11,7 +11,7 @@ export default class CustomizedList extends Component {
 
   componentDidMount() {
     //  if(this.props.currentList){
-    console.log('recieved',this.props.currentList)
+    // console.log('recieved',this.props.currentList)
    
   //    this.setState({ list:this.props.currentList });
   //  }

@@ -112,14 +112,16 @@ const [refresh, setRefresh] = useState(false)
   // console.log('refresh?', getRefreshStatus())
 
  if (refresh){
-  return (<p><Link to='/games/mygames'>Edit</Link></p>)
+    return (<p><a href='/games/mygames'>Edit</a></p>)
+  //window.location.reload()
+  //console.log('refresh?', refresh)
  }
 
 
   return (
     <div>{ready ?
       <div> <div>{!checkAddStatus(getRecords(), currentGame.id)? <FontAwesomeIcon className='addButton' icon='plus-circle' onClick={() => {handleAddGame(currentGame.id, user.email, props.token); setRefresh(true)}} />
-        : <p><Link to='/games/mygames'>Edit</Link></p>}</div>
+        : <p><a href='/games/mygames'>Edit</a></p>}</div>
       </div> : ''}
     </div>
   )

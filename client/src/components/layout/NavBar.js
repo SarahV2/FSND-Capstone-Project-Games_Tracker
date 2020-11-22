@@ -30,9 +30,9 @@ const NavBar = () => {
               <Link to='/' className='nav-link'>
                 Home
               </Link>
-              <Link to='/games/mygames' className='nav-link'>
+              <a href='/games/mygames' className='nav-link'>
                 My List
-              </Link>
+              </a>
             </Nav>
           ) : (
             <Link to='/games/new' className='nav-link'>

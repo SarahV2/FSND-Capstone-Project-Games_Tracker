@@ -1,6 +1,6 @@
 export const filterGames = (list, status) => {
   const filteredList = list.filter((game) => {
-    console.log('hello game', game)
+    //console.log('hello game', game)
     return game.status === status;
   });
 

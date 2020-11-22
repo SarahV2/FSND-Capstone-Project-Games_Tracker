@@ -40,7 +40,7 @@ export default class Game extends Component {
             <Card.Text>{gameGenres}</Card.Text>
             <Card.Text>{gamePlatforms}</Card.Text>
             <Card.Text><hr /></Card.Text>
-            {Array.isArray(this.props.userRecords) ? <AddGameRecord userRecords={this.props.userRecords} token={this.props.token} game={currentGame} /> : ''}
+            {Array.isArray(this.props.userRecords) ? <AddGameRecord userRecords={this.props.userRecords} token={this.props.token} game={currentGame} email={this.props.email} /> : ''}
 
           </Card.Body>
         </Card>
