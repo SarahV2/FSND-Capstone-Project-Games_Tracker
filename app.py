@@ -70,7 +70,13 @@ def addGame(token):
     release_year = body.get("releaseYear", None)
     genres = body.get("genres", None)
     platforms = body.get("platforms", None)
-    print(about)
+    # print(about)
+
+    if title is None or about is None or imgSrc is None:
+        abort(400)
+    elif release_year is None or genres is None or platforms is None:
+        abort(400)
+
     newGame = Game(
         title=title,
         about=about,
@@ -180,33 +186,30 @@ def checkUniqueness(user_id, game_id):
     else:
         return False
 
-def getRecordDetails(user_id,game_id):
+
+def getRecordDetails(user_id, game_id):
     record = (
         db.session.query(GameRecord)
         .join(User, GameRecord.user_id == user_id)
         .join(Game, GameRecord.game_id == game_id)
         .one_or_none()
-        )
-        # allRecords = []
-        # for record in records:
+    )
     game = {
-                "game_id": record.game_id,
-                "title": record.Game.title,
-                "about": record.Game.about,
-                "imgSrc": record.Game.imgSrc,
-                "releaseYear": record.Game.release_year,
-                "genres": record.Game.genres,
-                "platforms": record.Game.platforms,
-                "id": record.id,
-                "status": record.status
-                }
+        "game_id": record.game_id,
+        "title": record.Game.title,
+        "about": record.Game.about,
+        "imgSrc": record.Game.imgSrc,
+        "releaseYear": record.Game.release_year,
+        "genres": record.Game.genres,
+        "platforms": record.Game.platforms,
+        "id": record.id,
+        "status": record.status
+    }
     return game
-        # allRecords.append(games)
-    
+
 # -----------------------------------------------------------------
 
 # GET User's records
-
 
 @app.route("/api/user/records", methods=["POST"])
 @requires_auth("get:records")
@@ -280,15 +283,12 @@ def addGameRecord(token):
         updated_at=datetime.now(),
     )
 
-
     try:
         newRecord.insert()
-        detailedRecord=getRecordDetails(currentUserID,game_id)
-       
+        detailedRecord = getRecordDetails(currentUserID, game_id)
 
     except:
         newRecord.undo()
-
 
     return (
         jsonify(
@@ -305,7 +305,7 @@ def addGameRecord(token):
 @app.route("/api/user/records/<record_id>", methods=["PATCH"])
 @requires_auth("patch:records")
 def updateGameRecord(token, record_id):
-    detailedRecord={}
+    detailedRecord = {}
     body = request.get_json()
     # detailedRecord={}
     # user_email = body.get("email", None)
@@ -319,15 +319,14 @@ def updateGameRecord(token, record_id):
         abort(404)
     record.status = updated_status
     record.updated_at = datetime.now()
-    game_id=record.game_id
-    currentUserID=record.user_id
+    game_id = record.game_id
+    currentUserID = record.user_id
     try:
         record.update()
 
-        detailedRecord=getRecordDetails(currentUserID,game_id)
+        detailedRecord = getRecordDetails(currentUserID, game_id)
     except:
         record.undo()
-
 
     return (
         jsonify(
@@ -413,6 +412,15 @@ def not_found(error):
     )
 
 
+@app.errorhandler(405)
+def not_allowed(error):
+    return (
+        jsonify({"success": False, "error": 405,
+                 "message": "method not allowed"}),
+        405,
+    )
+
+
 @app.errorhandler(400)
 def bad_request(error):
     return (
@@ -435,6 +443,14 @@ def unauthorized(error):
     return (
         jsonify({"success": False, "error": 401, "message": "unauthorized"}),
         401,
+    )
+
+
+@app.errorhandler(403)
+def forbidden(error):
+    return (
+        jsonify({"success": False, "error": 403, "message": "forbidden"}),
+        403,
     )
 
 

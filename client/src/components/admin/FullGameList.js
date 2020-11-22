@@ -57,6 +57,7 @@ export default class FullGameList extends Component {
     return pageNumbers;
   }
   render() {
+    console.log(this.props.token)
     const list = this.state.currentList.map((game, index) => {
       return (
         <GameDetails
