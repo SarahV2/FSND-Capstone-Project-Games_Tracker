@@ -17,45 +17,17 @@ export default class GameStatusSelector extends Component {
     e.preventDefault();
     const { gameRecordID, token,email } = this.props;
     console.log(token)
-    console.log('new status:', e.target.value,'id:', gameRecordID); // TODO: modify it to the corresponding ajax request
+    console.log('new status:', e.target.value,'id:', gameRecordID); 
     
     this.setState({
       gameStatus: e.target.value,
     });
     await updateGameRecord(gameRecordID,e.target.value,email,token)
-    // console.log(result)
 
-    //  updateGameRecord(gameRecordID,e.target.value,email,token).then((data)=>{
-    //    if(data.userGames){
-    //      console.log('dataaaa',data.userGames)
-    //      localStorage.setItem('userRecords', JSON.stringify(data.userGames));
-    //    }
-    //   // this.props.refreshParent();
-    //   window.location.reload()
-    //  })
-    // getUserRecords(this.props.email, token).then((data) => {
-    //   if (data.userGames) { //get it from the props
-    //     
-         
-    //     // this.setState({
-    //     //   redirect:true
-    //     // })
-    //   }
-     
-    // });
- 
 
   };
   render() {
-    if(this.state.redirect){
-       //return <Redirect to='/games/mygames'/>
-       console.log('helloooo')
-       //this.props.refreshParent();
-       //window.location.reload()
 
-
-
-    }
     return (
       <select
         style={{

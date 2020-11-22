@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, } from 'react-bootstrap';
 const placeholderImgSrc =
     'https://upload.wikimedia.org/wikipedia/en/thumb/e/e0/WPVG_icon_2016.svg/374px-WPVG_icon_2016.svg.png';
 export default class HoveringInfo extends Component {
@@ -35,13 +35,8 @@ export default class HoveringInfo extends Component {
                     onMouseLeave={this.handleMouseHover}
                 >
 
-                    {/* {this.state.showImage&& */}
-
-                    {/* //  } */}
-
                     {this.state.isHovering ?
                         <div style={{ height: '30rem', padding:'2%'}} >
-                            {/* Hovering right meow! 🐱 */}
                             {currentGame.about}
                         </div> : <Card.Img
                             className='mx-auto'
@@ -50,14 +45,7 @@ export default class HoveringInfo extends Component {
                             src={currentGame.imgSrc ? currentGame.imgSrc : placeholderImgSrc}
                             style={{ height: '30rem' }}
                         />
-
-
                     }
-
-
-
-
-
 
                 </div>
 

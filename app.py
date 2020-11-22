@@ -33,6 +33,8 @@ def paginate_games(request, selection):
 # ROUTES
 
 # GET all games
+
+
 @app.route("/api/games", methods=["GET"])
 def get_games():
     games_list = Game.query.all()
@@ -42,7 +44,7 @@ def get_games():
 
     # games = [game.format() for game in games]
 
-    return jsonify({"success": True, "games": current_list,"total_games":len(games_list)}), 200
+    return jsonify({"success": True, "games": current_list, "total_games": len(games_list)}), 200
 
 
 # -----------------------------------------------------------------
@@ -95,7 +97,7 @@ def addGame(token):
 # PATCH game
 @app.route("/api/games/<game_id>", methods=["PATCH"])
 @requires_auth("patch:games")
-def updateGameInfo(token,game_id):
+def updateGameInfo(token, game_id):
     game = Game.query.filter(Game.id == game_id).one_or_none()
 
     if game is None:
@@ -181,7 +183,29 @@ def checkUniqueness(user_id, game_id):
     else:
         return False
 
-
+def getRecordDetails(user_id,game_id):
+    record = (
+        db.session.query(GameRecord)
+        .join(User, GameRecord.user_id == user_id)
+        .join(Game, GameRecord.game_id == game_id)
+        .one_or_none()
+        )
+        # allRecords = []
+        # for record in records:
+    game = {
+                "game_id": record.game_id,
+                "title": record.Game.title,
+                "about": record.Game.about,
+                "imgSrc": record.Game.imgSrc,
+                "releaseYear": record.Game.release_year,
+                "genres": record.Game.genres,
+                "platforms": record.Game.platforms,
+                "id": record.id,
+                "status": record.status
+                }
+    return game
+        # allRecords.append(games)
+    
 # -----------------------------------------------------------------
 
 # GET User's records
@@ -212,13 +236,14 @@ def getUserRecords(token):
             "releaseYear": record.Game.release_year,
             "genres": record.Game.genres,
             "platforms": record.Game.platforms,
-            "id":record.id,
-            "status":record.status
+            "id": record.id,
+            "status": record.status
         }
         allRecords.append(games)
 
     return (
-        jsonify({"success": True, "found": currentUserID, "userGames": allRecords}),
+        jsonify({"success": True, "found": currentUserID,
+                 "userGames": allRecords}),
         200,
     )
 
@@ -231,10 +256,11 @@ def getUserRecords(token):
 @app.route("/api/user/games", methods=["POST"])
 @requires_auth("post:records")
 def addGameRecord(token):
+    # detailedRecord={}
     body = request.get_json()
     user_email = body.get("email", None)
     game_id = body.get("gameID", None)
-    
+
     if user_email is None or game_id is None:
         abort(400)
 
@@ -257,14 +283,20 @@ def addGameRecord(token):
         updated_at=datetime.now(),
     )
 
+
     try:
         newRecord.insert()
+        detailedRecord=getRecordDetails(currentUserID,game_id)
+       
+
     except:
         newRecord.undo()
 
+
     return (
         jsonify(
-            {"success": True, "found": currentUserID, "newRecord": newRecord.format()}
+            {"success": True, "found": currentUserID,
+                "newRecord": newRecord.format(), "gameRecord": detailedRecord}
         ),
         200,
     )
@@ -275,12 +307,14 @@ def addGameRecord(token):
 # PATCH user's game record (change game's status/ list)
 @app.route("/api/user/records/<record_id>", methods=["PATCH"])
 @requires_auth("patch:records")
-def updateGameRecord(token,record_id):
+def updateGameRecord(token, record_id):
+    detailedRecord={}
     body = request.get_json()
+    # detailedRecord={}
     # user_email = body.get("email", None)
     updated_status = body.get("status", None)
-
-    if updated_status is None:
+    user_email = body.get("email", None)
+    if updated_status is None or user_email is None:
         abort(400)
     # //currentUserID = getUserID(user_email)
     record = GameRecord.query.filter(GameRecord.id == record_id).one_or_none()
@@ -288,13 +322,19 @@ def updateGameRecord(token,record_id):
         abort(404)
     record.status = updated_status
     record.updated_at = datetime.now()
+    game_id=record.game_id
+    currentUserID=record.user_id
     try:
         record.update()
+
+        detailedRecord=getRecordDetails(currentUserID,game_id)
     except:
         record.undo()
+
+
     return (
         jsonify(
-            {"success": True, "updated_record": record.format()}
+            {"success": True, "updatedRecord": detailedRecord}
         ),
         200,
     )
@@ -305,12 +345,12 @@ def updateGameRecord(token,record_id):
 # DELETE a user's game record
 @app.route("/api/user/records/<record_id>", methods=["DELETE"])
 @requires_auth("delete:records")
-def deleteRecord(token,record_id):
+def deleteRecord(token, record_id):
     # body = request.get_json()
     # user_email = body.get("email", None)
 
     # if user_email is None:
-        # abort(400)
+    # abort(400)
     # currentUserID = getUserID(user_email)
     record = GameRecord.query.filter(GameRecord.id == record_id).one_or_none()
     if record is None:
@@ -354,7 +394,8 @@ def getUserGamesIDs(token):
         allRecords.append(games)
 
     return (
-        jsonify({"success": True, "found": currentUserID, "userGames": allRecords}),
+        jsonify({"success": True, "found": currentUserID,
+                 "userGames": allRecords}),
         200,
     )
 
@@ -369,7 +410,8 @@ def unprocessable(error):
 @app.errorhandler(404)
 def not_found(error):
     return (
-        jsonify({"success": False, "error": 404, "message": "resource not found"}),
+        jsonify({"success": False, "error": 404,
+                 "message": "resource not found"}),
         404,
     )
 
@@ -385,7 +427,8 @@ def bad_request(error):
 @app.errorhandler(500)
 def internal_server_error(error):
     return (
-        jsonify({"success": False, "error": 500, "message": "internal server error"}),
+        jsonify({"success": False, "error": 500,
+                 "message": "internal server error"}),
         500,
     )
 
@@ -401,6 +444,7 @@ def unauthorized(error):
 @app.errorhandler(AuthError)
 def handle_auth_errors(error):
     return (
-        jsonify({"success": False, "error": error.status_code, "message": error.error}),
+        jsonify({"success": False, "error": error.status_code,
+                 "message": error.error}),
         401,
     )

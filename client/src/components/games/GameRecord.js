@@ -19,7 +19,7 @@ export default class GameRecord extends Component {
     e.preventDefault();
     const { currentGame, email, token } = this.props;
     await deleteUserRecord(currentGame.id,token)
-    console.log('deleted', currentGame.id, email, token); // TODO: modify it to the corresponding ajax request
+    console.log('deleted', currentGame.id, email, token); 
     //this.props.refreshParent()
   };
   render() {
