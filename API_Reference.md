@@ -161,11 +161,11 @@ curl http://127.0.0.1:5000/api/games/16 -X PATCH -H "Authorization: ${token}" -H
 }
 ```
 
-* #### DELETE ```/games/api/<game_id>```
+* #### DELETE ```/games/<game_id>```
   * General: Deletes a game given its id and returns a success value and deleted game's id
 
   * Sample:
-```curl http://127.0.0.1:5000/api/games/17 -X DELETE```
+```curl http://127.0.0.1:5000/api/games/17 -X DELETE -H "Authorization: ${token}"```
 
 
 ```
@@ -176,3 +176,119 @@ curl http://127.0.0.1:5000/api/games/16 -X PATCH -H "Authorization: ${token}" -H
 
 ```
 
+
+* #### POST ```/user/records```
+  * General: Returns a list of all games (records) that the user added to their list
+
+  * Sample:
+```curl http://127.0.0.1:5000/api/user/records -X POST -H "Authorization: ${token}" -H "Content-Type:application/json" -d '{"email":"${email}"}'```
+
+
+```
+{
+    "success": true,
+    "userGames": [
+        {
+            "about": "some description about the cool game",
+            "game_id": 1,
+            "genres": [
+                "Action",
+                "Adventure"
+            ],
+            "id": 71,
+            "imgSrc": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/D1IOd0BWsAAiX5T.jpg/220px-D1IOd0BWsAAiX5T.jpg",
+            "platforms": [
+                "PC",
+                "PS4",
+                "Xbox One"
+            ],
+            "releaseYear": "2019",
+            "status": "want to play",
+            "title": "Control"
+        }
+    ]
+}
+```
+
+* #### POST ```/user/games```
+  * General: Add a game to the user records by creating a new one. It returns an object containing the newly created record, along with a detailed one, and a success value
+
+  * Sample:
+```curl http://127.0.0.1:5000/api/user/games -X POST -H "Authorization: ${token}" -H "Content-Type:application/json" -d '{"email":"${email}", "gameID":1}'```
+
+```
+{
+    "gameRecord": {
+        "about": "game description",
+        "game_id": 1,
+        "genres": [
+            "Action",
+            "Adventure"
+        ],
+        "id": 71,
+        "imgSrc": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/D1IOd0BWsAAiX5T.jpg/220px-D1IOd0BWsAAiX5T.jpg",
+        "platforms": [
+            "PC",
+            "PS4",
+            "Xbox One"
+        ],
+        "releaseYear": "2019",
+        "status": "want to play",
+        "title": "Control"
+    },
+    "newRecord": {
+        "created_at": "Mon, 23 Nov 2020 05:57:49 GMT",
+        "game_id": 1,
+        "id": 71,
+        "status": "want to play",
+        "updated_at": "Mon, 23 Nov 2020 05:57:49 GMT",
+        "user_id": 4
+    },
+    "success": true
+}
+
+```
+
+* #### PATCH ```/user/records/<record_id>```
+  * General: Update user's game (record) by updating the status (eg. "Currently Playing","Finished"..etc). The endpoint returns the updated and populated record along with a success value
+
+  * Sample:
+```curl http://127.0.0.1:5000/api/user/records/71 -X PATCH -H "Authorization: ${token}" -H "Content-Type:application/json" -d '{"email":"${email}", "status":"Finished"}'```
+
+```
+{
+    "success": true,
+    "updatedRecord": {
+        "about": "game description",
+        "game_id": 1,
+        "genres": [
+            "Action",
+            "Adventure"
+        ],
+        "id": 71,
+        "imgSrc": "https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/D1IOd0BWsAAiX5T.jpg/220px-D1IOd0BWsAAiX5T.jpg",
+        "platforms": [
+            "PC",
+            "PS4",
+            "Xbox One"
+        ],
+        "releaseYear": "2019",
+        "status": "Finished",
+        "title": "Control"
+    }
+}
+
+```
+* #### DELETE ```/user/records/<record_id>```
+  * General: Deletes a record given its id and returns a success value and deleted record's id
+
+  * Sample:
+```curl http://127.0.0.1:5000/api/user/records/71 -X DELETE -H "Authorization: ${token}"```
+
+```
+{
+    "deleted_record": "71",
+    "success": true
+}
+
+```
