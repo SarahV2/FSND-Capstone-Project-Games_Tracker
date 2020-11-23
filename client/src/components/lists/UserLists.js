@@ -26,7 +26,7 @@ class UserLists extends Component {
     //   isLoading: true
     // });
 
-    console.log(this.props.token)
+    //console.log(this.props.token)
     this.getGames()
   }
 
@@ -36,6 +36,10 @@ class UserLists extends Component {
   
     let userGames = JSON.parse(localStorage.getItem('userRecords'));
 
+    if(!userGames){
+      window.location.href = `/games`;
+
+    }
     //Currently Playing 
     const currentlyPlaying = filterGames(userGames, 'currently playing');
 

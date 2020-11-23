@@ -11,13 +11,13 @@ export default class GameStatusSelector extends Component {
       this.setState({
           gameStatus:this.props.defaultValue
       })
-      console.log(this.props)
+      //console.log(this.props)
   }
   handleChange = async(e) => {
     e.preventDefault();
     const { gameRecordID, token,email } = this.props;
-    console.log(token)
-    console.log('new status:', e.target.value,'id:', gameRecordID); 
+    //console.log(token)
+    //console.log('new status:', e.target.value,'id:', gameRecordID); 
     
     this.setState({
       gameStatus: e.target.value,

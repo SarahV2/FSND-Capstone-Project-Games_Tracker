@@ -23,7 +23,7 @@ const AddGameRecord = (props) => {
     (async () => {
       try {
         if (props.token) {
-          console.log('in addddddd', props)
+          //console.log('in add', props)
           if (isGamer) {
             //let records = await getUserGames(user.email, props.token)
             //records = records.userGames
@@ -62,7 +62,7 @@ const AddGameRecord = (props) => {
 
 const checkAddStatus = (arr, currentGameID) => {
   const filteredList = arr.filter((record) => {
-    console.log('hello current game', currentGameID)
+    //console.log('current game', currentGameID)
     return record.game_id === currentGameID;
   });
 

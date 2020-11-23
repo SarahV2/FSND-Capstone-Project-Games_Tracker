@@ -33,6 +33,7 @@ const App = () => {
   const [userRecords, setRecords] = useState('')
   const userRole = user && user['http://demozero.net/roles'][0];
   const isGamer = userRole === 'gamer';
+  const isAdmin = userRole === 'admin';
 
   useEffect(() => {
     (async () => {
@@ -51,6 +52,9 @@ const App = () => {
               }
             });
           }
+          else if(!isGamer&&!isAdmin){
+            window.location.reload();
+          }
         }
       } catch (e) {
         console.error(e);
@@ -63,8 +67,8 @@ const App = () => {
         <NavBar />
         <Switch>
           <Route exact path='/' component={Landing} isAuthenticated={isAuthenticated} />
-          <PrivateRoute exact path='/games' component={GamesList} token={tokeno} email={email} userRecords={userRecords}
-          />
+          <GamesList exact path='/games'token={tokeno} isAuthenticated={isAuthenticated} isAdmin={isAdmin} isGamer={isGamer} email={email} userRecords={userRecords}/>
+        
           <ProtectedRoute
             exact
             path='/games/new'

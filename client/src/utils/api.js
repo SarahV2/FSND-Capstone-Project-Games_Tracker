@@ -1,6 +1,5 @@
 const link = 'http://localhost:5000/api';
 
-
 //--------------------------------------------------- Game ----------------------------------------------
 
 // Add a new game
@@ -18,7 +17,7 @@ export const addGame = (gameDetails, token) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((response) => {
@@ -60,18 +59,17 @@ export const deleteGame = (gameID, token) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((response) => {
-      console.log('game successfully deleted', gameID);
+      //console.log('game successfully deleted', gameID);
       window.location.href = `/admin/games`;
-
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
     });
-}
+};
 
 // Get a game by ID
 // GET '/api/games/<game_id>
@@ -94,7 +92,6 @@ export const getGame = (gameID) => {
   });
 };
 
-
 // Update game's info
 // PATCH '/api/games/<game_id>
 export const updateGame = (gameID, gameDetails, token) => {
@@ -110,7 +107,7 @@ export const updateGame = (gameID, gameDetails, token) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((response) => {
@@ -133,14 +130,14 @@ export const getUserRecords = (email, token) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ email }),
   }).then((response) => {
     return response
       .json()
       .then((data) => {
-        console.log(data);
+        //console.log(data);
         return data;
       })
       .catch((err) => {
@@ -160,29 +157,26 @@ export const addGameToList = (gameID, email, token) => {
     }),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-  })
-    .then((response) => {
-      return response
-        .json()
-        .then((data) => {
-          console.log(data);
-          let currentList = JSON.parse(localStorage.getItem('userRecords'));
-          currentList.push(data.gameRecord)
-          localStorage.setItem('userRecords', JSON.stringify(currentList));
-          // window.location.href = `/games`;
-          window.location.href = `/games/mygames`;
+  }).then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+        let currentList = JSON.parse(localStorage.getItem('userRecords'));
+        currentList.push(data.gameRecord);
+        localStorage.setItem('userRecords', JSON.stringify(currentList));
+        // window.location.href = `/games`;
+        window.location.href = `/games/mygames`;
 
-          //return data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-}
-
-
+        //return data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};
 
 // Update a user's record
 // PATCH '/api/user/records/<record_id>
@@ -190,33 +184,33 @@ export const updateGameRecord = (recordID, status, email, token) => {
   return fetch(`${link}/user/records/${recordID}`, {
     method: 'PATCH',
     body: JSON.stringify({
-      status, email
+      status,
+      email,
     }),
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
-  })
-    .then((response) => {
-      return response
-        .json()
-        .then((data) => {
-          console.log(data);
-          let currentList = JSON.parse(localStorage.getItem('userRecords'));
-          const filteredRecords = currentList.filter((record) => record.id !== recordID);
-          filteredRecords.push(data.updatedRecord)
-          console.log(data.updatedRecord)
-          localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
-          window.location.href = `/games/mygames`;
-          //return data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    })
-}
-
-
+  }).then((response) => {
+    return response
+      .json()
+      .then((data) => {
+        console.log(data);
+        let currentList = JSON.parse(localStorage.getItem('userRecords'));
+        const filteredRecords = currentList.filter(
+          (record) => record.id !== recordID
+        );
+        filteredRecords.push(data.updatedRecord);
+        console.log(data.updatedRecord);
+        localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
+        window.location.href = `/games/mygames`;
+        //return data;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+};
 
 // Delete a record using its ID and the user's email
 // DELETE '/api/games/<game_id>'
@@ -225,23 +219,23 @@ export const deleteUserRecord = (recordID, token) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
+      Authorization: `Bearer ${token}`,
     },
   })
     .then((response) => {
       console.log('game successfully deleted', recordID);
       let currentList = JSON.parse(localStorage.getItem('userRecords'));
-      const filteredRecords = currentList.filter((record) => record.id !== recordID);
-      console.log(filteredRecords)
+      const filteredRecords = currentList.filter(
+        (record) => record.id !== recordID
+      );
+      console.log(filteredRecords);
       localStorage.setItem('userRecords', JSON.stringify(filteredRecords));
       window.location.href = `/games/mygames`;
-
     })
     .catch((error) => {
-      console.log(error)
+      console.log(error);
     });
-}
-
+};
 
 //--------------------------------------------------- User's Records ----------------------------------------------
 
@@ -252,9 +246,9 @@ export const getUserGames = (email, token) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ email })
+    body: JSON.stringify({ email }),
   }).then((response) => {
     return response
       .json()

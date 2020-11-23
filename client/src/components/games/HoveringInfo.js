@@ -26,7 +26,7 @@ export default class HoveringInfo extends Component {
     render() {
         let { currentGame } = this.props
         let showImage = !this.state.isHovering
-        console.log('image', showImage)
+        //console.log('image', showImage)
         return (
             <div style={{ height: '30rem', backgroundImage:`url(${currentGame.imgSrc})`,  backgroundSize: 'cover',  backgroundRepeat: 'no-repeat',backgroundPosition: 'center', }}>
 

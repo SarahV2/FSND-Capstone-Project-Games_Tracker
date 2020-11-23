@@ -15,13 +15,12 @@ export default class GamesList extends Component {
 
   getGames() {
     getAllGames(this.state.page).then((data) => {
-      console.log(data.games);
+      // console.log(data.games);
       if (data.games) {
         this.setState({
           gamesList: data.games,
           totalGames: data.total_games,
         });
-        console.log('got games', data.games);
       }
     });
   }
@@ -49,12 +48,25 @@ export default class GamesList extends Component {
     return pageNumbers;
   }
 
+
+
   render() {
-    console.log(this.state);
-    console.log('games list', this.props)
+    let { isAuthenticated, isGamer,isAdmin } = this.props;
+    if (isAuthenticated) {
+      if (!isGamer&&!isAdmin) {
+         window.location.reload();
+      }
+    }
+
     const displayList = this.state.gamesList.map((game, index) => {
-      console.log('current', this.state.gamesList);
-      return <Game userRecords={this.props.userRecords} key={index} game={game} token={this.props.token} />;
+      return (
+        <Game
+          userRecords={this.props.userRecords}
+          key={index}
+          game={game}
+          token={this.props.token}
+        />
+      );
     });
     return (
       <div>
@@ -64,7 +76,6 @@ export default class GamesList extends Component {
         <CardDeck>{displayList}</CardDeck>
         <div className='pagination-menu'>{this.createPagination()}</div>
         <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
-
       </div>
     );
   }

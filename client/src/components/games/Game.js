@@ -25,7 +25,7 @@ export default class Game extends Component {
     const genres = currentGame.genres
     const gameGenres = genres.map((genre) => <span><span className='genres'>{genre}</span>{' '}</span>)
     const gamePlatforms = organizePlatforms(platforms)
-    console.log('in game', this.props)
+    //console.log('in game', this.props)
     return (
       <div className='center-me col-lg-4'>
         <Card style={{ width: '30rem', height: '52rem' }} className='card-space'>
