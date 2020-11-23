@@ -51,3 +51,11 @@ A user with this role has the ability to link games to their account, this is do
 a detailed description of all the endpoints is provided <a href="https://github.com/SarahV2/FSND-Capstone-Project-Games/blob/master/API_Reference.md">here</a>
 
 ## Testing
+To run the tests, run the following commands:
+```
+source setup.sh
+dropdb vgtracker_test
+createdb vgtracker_test
+psql -U postgres -f vgtracker.psql vgtracker_test
+python test_app.py
+```
