@@ -1,0 +1,299 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.2
+-- Dumped by pg_dump version 12.2
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: alembic_version; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.alembic_version (
+    version_num character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public.alembic_version OWNER TO postgres;
+
+--
+-- Name: games; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.games (
+    id integer NOT NULL,
+    title character varying,
+    release_year character varying,
+    about character varying,
+    created_at timestamp without time zone,
+    genres character varying[],
+    "imgSrc" character varying,
+    platforms character varying[],
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.games OWNER TO postgres;
+
+--
+-- Name: games_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.games_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.games_id_seq OWNER TO postgres;
+
+--
+-- Name: games_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.games_id_seq OWNED BY public.games.id;
+
+
+--
+-- Name: records; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.records (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    game_id integer NOT NULL,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone,
+    status character varying
+);
+
+
+ALTER TABLE public.records OWNER TO postgres;
+
+--
+-- Name: records_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.records_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.records_id_seq OWNER TO postgres;
+
+--
+-- Name: records_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.records_id_seq OWNED BY public.records.id;
+
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.users (
+    id integer NOT NULL,
+    email character varying,
+    created_at timestamp without time zone,
+    updated_at timestamp without time zone
+);
+
+
+ALTER TABLE public.users OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.users_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.users_id_seq OWNER TO postgres;
+
+--
+-- Name: users_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
+
+
+--
+-- Name: games id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.games ALTER COLUMN id SET DEFAULT nextval('public.games_id_seq'::regclass);
+
+
+--
+-- Name: records id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.records ALTER COLUMN id SET DEFAULT nextval('public.records_id_seq'::regclass);
+
+
+--
+-- Name: users id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.alembic_version (version_num) FROM stdin;
+7fbf2d3762d8
+\.
+
+
+--
+-- Data for Name: games; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.games (id, title, release_year, about, created_at, genres, "imgSrc", platforms, updated_at) FROM stdin;
+10	The Sims 4	2014	ss	2020-11-21 04:41:23.06408	{Simulator}	https://upload.wikimedia.org/wikipedia/en/3/32/The_Sims_4_Box_Art.png	{PC,PS4,"Xbox One"}	2020-11-22 05:43:00.785545
+3	Cyperpunk 2077	2020	p	2020-11-20 17:14:13.584958	{RPG}	https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/Cyberpunk_2077_box_art.jpg/220px-Cyberpunk_2077_box_art.jpg	{PC,"Xbox Series X",PS5,"Xbox One X"}	2020-11-20 17:14:47.942635
+4	Sekiro: Shadows Die Twice	2019	tl	2020-11-20 22:28:18.970674	{Action}	https://upload.wikimedia.org/wikipedia/en/6/6e/Sekiro_art.jpg	{PC,"Xbox One X",PS4}	2020-11-20 22:28:18.970674
+5	Tomodachi Life	2014	tl	2020-11-20 22:31:17.911504	{Simulator}	https://upload.wikimedia.org/wikipedia/en/b/b4/TomodachiLifeBoxartNA.jpg	{"Nintendo 3DS/2DS"}	2020-11-20 22:31:17.911504
+6	Ghostrunner	2020	tl	2020-11-20 22:34:15.840077	{Action}	https://upload.wikimedia.org/wikipedia/en/2/2c/Ghostrunner_cover_art.jpg	{PC,"Xbox Series X",PS5,"Nintendo Switch","Nintendo Switch Lite","Xbox One X",PS4}	2020-11-20 22:34:15.840077
+1	Control	2019	Jesse Faden arrives at the Oldest House under the telepathic guidance of Polaris, finding the building seemingly devoid of people. She bumps into a Finnish janitor, Ahti, who directs her to an elevator for her "job interview". Through the elevator, Jesse discovers that the Federal Bureau of Control's Director, Zachariah Trench, has seemingly committed suicide with his own sidearm. Picking it up, Jesse learns that it is an Object of Power known as the Service Weapon, and is transported to the Astral Plane, where she completes a ritual and is selected as the new Director by the Board. Jesse emerges from Trench's office and finds that the Oldest House has been invaded by a hostile force she dubs "the Hiss", which has possessed most of the Bureau's agents and corrupted the building's shifting topography. Jesse uses an Object of Power known as the Hotline to listen to the lingering presence of Trench, who relays that his former management team knows the secrets of the Bureau, and Jesse hopes they may be able to tell her the whereabouts of her brother, Dylan, who was kidnapped by the FBC years prior.	2020-11-20 17:01:20.783664	{Action,Adventure}	https://upload.wikimedia.org/wikipedia/en/thumb/6/6a/D1IOd0BWsAAiX5T.jpg/220px-D1IOd0BWsAAiX5T.jpg	{PC,PS4,"Xbox One"}	2020-11-21 01:18:41.040486
+7	Life Is Strange 2	2018	In 2016, 16-year-old Sean Diaz lives with his 9-year-old brother Daniel and father Esteban in Seattle, after Sean's mother Karen left them following Daniel's birth. One day, Sean intervenes when their neighbor Brett harasses Daniel, inadvertently injuring Brett as a police officer passes by. Esteban arrives at the scene and is shot and killed by the officer. A sudden explosion damages the house, and Sean flees with Daniel before more police arrive. 	2020-11-21 04:19:24.79153	{Adventure}	https://upload.wikimedia.org/wikipedia/en/f/fa/Life_Is_Strange_2_cover.jpg	{PC,"Xbox One X",PS4}	2020-11-21 04:19:35.999265
+8	Death Stranding	2019	\nFreelance courier Sam Porter Bridges (Norman Reedus) is transporting cargo but is interrupted by Timefall. He receives assistance from Fragile (Léa Seydoux) in evading a BT. When she leaves, Sam continues his delivery. He arrives at his destination Central Knot City, only to be warned that one of the citizens has committed suicide and their corpse is on the verge of necrosis. Due to being both a repatriate and having DOOMS, Sam is assigned to transport the corpse to an incinerator to safely dispose of it, but an encounter with BTs hinders his progress and the corpse causes a voidout, destroying Central Knot City. He awakens in Capital Knot City and meets Deadman (Guillermo del Toro/Jesse Corti), a doctor from Bridges. Sam is then tasked to deliver morphine for the dying president of the UCA, his adoptive mother Bridget Strand (Lindsay Wagner/Emily O'Brien).	2020-11-21 04:25:20.932649	{Action}	https://upload.wikimedia.org/wikipedia/en/2/22/Death_Stranding.jpg	{PC,PS4}	2020-11-21 04:25:20.932649
+12	Detroit: Become Human	2018	Set in Detroit during the year 2038, the city has been revitalized by the invention and introduction of androids into everyday life. But when androids start behaving as if they are alive, events begin to spin out of control. Step into the roles of the story’s pivotal three playable characters (Kara, Connor, and Markus), each with unique perspectives, motivations and abilities as they face their true selves and question their values. These three androids are present throughout the game as they follow through an emotional journey with choices that must be taken in order for their ultimate 'cause', which can be defined many different ways depending on the values of the player. The plot of the game deals with a variety of mature themes that explore moral ground and each player decision affects what will happen.	2020-11-21 06:17:43.867717	{Adventure}	https://cdn.peoople.app/image/recommendation/4142422/4142422_010620155455_opt.jpg	{PC,PS4}	2020-11-21 06:17:43.867717
+11	Spider-Man	2018	Following Wilson Fisk's capture by Spider-Man, the Inner Demons begin seizing Fisk's illicit assets. Mary Jane and Spider-Man learn that the Demons are seeking something called Devil's Breath. With the aid of Officer Jefferson Davis, Spider-Man thwarts a Demon attack. Davis is lauded for his heroism at a re-election event for Mayor Norman Osborn. The Demons attack the event, killing Davis and many other attendees. Peter witnesses Martin Li transforming into their leader, Mister Negative, but is knocked unconscious before he can intervene. Following the attack, Osborn hires Silver Sablinova and Sable International to supplant the police. Peter befriends Davis' son Miles and persuades him to volunteer at F.E.A.S.T.\n	2020-11-21 06:10:35.382995	{Action,Adventure}	https://i.redd.it/rvmct0vpltm11.jpg	{PS5,PS4}	2020-11-21 06:12:24.84768
+9	Ghost of Tsushima	2020	fff	2020-11-21 04:39:55.258541	{Action,Adventure}	https://upload.wikimedia.org/wikipedia/en/b/b6/Ghost_of_Tsushima.jpg	{PS4}	2020-11-21 19:45:37.49205
+2	Animal Crossing: New Horizons	2020	TL	2020-11-20 17:04:56.734332	{Simulator}	https://upload.wikimedia.org/wikipedia/en/thumb/1/1f/Animal_Crossing_New_Horizons.jpg/220px-Animal_Crossing_New_Horizons.jpg	{"Nintendo Switch"}	2020-11-21 19:47:55.620466
+\.
+
+
+--
+-- Data for Name: records; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.records (id, user_id, game_id, created_at, updated_at, status) FROM stdin;
+71	3	2	2020-11-23 19:41:08.835712	2020-11-23 19:41:08.835712	want to play
+72	3	5	2020-11-23 20:03:40.562399	2020-11-23 20:03:40.562399	want to play
+73	3	1	2020-11-23 20:04:32.555149	2020-11-23 20:04:32.555149	want to play
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.users (id, email, created_at, updated_at) FROM stdin;
+3	vgtracker.capstone@gmail.com	2020-11-23 19:41:08.813707	2020-11-23 19:41:08.813707
+\.
+
+
+--
+-- Name: games_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.games_id_seq', 13, true);
+
+
+--
+-- Name: records_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.records_id_seq', 73, true);
+
+
+--
+-- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.users_id_seq', 3, true);
+
+
+--
+-- Name: alembic_version alembic_version_pkc; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.alembic_version
+    ADD CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num);
+
+
+--
+-- Name: games games_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.games
+    ADD CONSTRAINT games_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: records records_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.records
+    ADD CONSTRAINT records_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_email_key UNIQUE (email);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: records records_game_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.records
+    ADD CONSTRAINT records_game_id_fkey FOREIGN KEY (game_id) REFERENCES public.games(id);
+
+
+--
+-- Name: records records_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.records
+    ADD CONSTRAINT records_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

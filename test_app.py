@@ -120,7 +120,7 @@ class GamesTrackerTestCase(unittest.TestCase):
     # PATCH /api/games/<game_id>
 
     def test_update_game(self):
-        res = self.client().patch("/api/games/17", json=self.updated_game,
+        res = self.client().patch("/api/games/10", json=self.updated_game,
                                   headers=self.admin_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
@@ -143,11 +143,11 @@ class GamesTrackerTestCase(unittest.TestCase):
     # DELETE /api/games/<game_id>
 
     def test_delete_game(self):
-        res = self.client().delete("/api/games/12", headers=self.admin_header)
+        res = self.client().delete("/api/games/11", headers=self.admin_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
-        self.assertEqual(data["deleted"], '12')
+        self.assertEqual(data["deleted"], '11')
 
     def test_delete_game_not_found(self):
         res = self.client().delete("/api/games/5555",
@@ -180,7 +180,7 @@ class GamesTrackerTestCase(unittest.TestCase):
     # POST /api/user/games
 
     def test_add_gameRecord(self):
-        body = {"email": self.user_email, "gameID": 8}
+        body = {"email": self.user_email, "gameID": 7}
         res = self.client().post("/api/user/games", json=body, headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
