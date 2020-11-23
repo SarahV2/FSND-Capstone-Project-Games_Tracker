@@ -48,6 +48,6 @@ A user with this role has the ability to link games to their account, this is do
 ```delete:records```: permission to delete (unlink) a game from a user's list
 
 ## API Reference
-
+a detailed description of all the endpoints is provided <a href="https://github.com/SarahV2/FSND-Capstone-Project-Games/blob/master/API_Reference.md">here</a>
 
 ## Testing
