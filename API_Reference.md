@@ -165,9 +165,8 @@ curl http://127.0.0.1:5000/api/games/16 -X PATCH -H "Authorization: ${token}" -H
   * General: Deletes a game given its id and returns a success value and deleted game's id
 
   * Sample:
-```
-curl http://127.0.0.1:5000/api/games/17 -X DELETE```
-```
+```curl http://127.0.0.1:5000/api/games/17 -X DELETE```
+
 
 ```
 {
