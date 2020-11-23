@@ -216,6 +216,7 @@ def getRecordDetails(user_id, game_id):
 def getUserRecords(token):
     body = request.get_json()
     user_email = body.get("email", None)
+    print(user_email)
     if user_email is None:
         abort(400)
     currentUserID = getUserID(user_email)
@@ -242,7 +243,7 @@ def getUserRecords(token):
         allRecords.append(games)
 
     return (
-        jsonify({"success": True, "found": currentUserID,
+        jsonify({"success": True,
                  "userGames": allRecords}),
         200,
     )
@@ -292,7 +293,7 @@ def addGameRecord(token):
 
     return (
         jsonify(
-            {"success": True, "found": currentUserID,
+            {"success": True,
                 "newRecord": newRecord.format(), "gameRecord": detailedRecord}
         ),
         200,
