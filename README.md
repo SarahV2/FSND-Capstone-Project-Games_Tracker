@@ -20,8 +20,13 @@ You'll need to have Flask and PostgreSQL installed on your machine prior procees
 
 In order to run the application locally, clone this repository first and then follow the instructions below:
 
+### Database Setup
+First, navigate to the project's directory and then run the following commands:
+1. ```source setup.sh```
+2. ```createdb vgtracker```
+3. ```psql -U postgres -f vgtracker.psql vgtracker```
+
 ### Backend
-First, navigate to the project's directory and then:
 1. Install dependencies ```pip install -r requirements.txt```
 2. Set up the app ```export FLASK_APP=app.py```
 3. Set up the development environment ```export FLASK_ENV=development```
@@ -52,10 +57,9 @@ a detailed description of all the endpoints is provided <a href="https://github.
 
 ## Testing
 To run the tests, run the following commands:
-```
-source setup.sh
-dropdb vgtracker_test
-createdb vgtracker_test
-psql -U postgres -f vgtracker.psql vgtracker_test
-python test_app.py
-```
+if exists, drop the database first: ```dropdb vgtracker_test```
+1. ```source setup.sh```
+2. ```createdb vgtracker_test```
+3. ```psql -U postgres -f vgtracker.psql vgtracker_test```
+4. ```python test_app.py```
+
