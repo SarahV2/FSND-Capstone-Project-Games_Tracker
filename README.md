@@ -57,7 +57,7 @@ a detailed description of all the endpoints is provided <a href="https://github.
 
 ## Testing
 To run the tests, run the following commands:
-if exists, drop the database first: ```dropdb vgtracker_test```
+<br/>if exists, drop the database first: ```dropdb vgtracker_test``` 
 1. ```source setup.sh```
 2. ```createdb vgtracker_test```
 3. ```psql -U postgres -f vgtracker.psql vgtracker_test```
