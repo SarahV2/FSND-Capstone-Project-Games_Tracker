@@ -1,6 +1,8 @@
 # Video Game Tracker
 Video games tracker is a full stack web app that allows users to keep track of their games by adding games to their account and moving them between various lists by changing the status of their play (want to play, currently playing, on hold, finished, and dropped).
 
+This project is my capstone project of Udacity's Full Stack Nanodegree, where I attempted to build a full stack web application that uses Flask as a backend server, React as a frontend framework, and Auth0 for authentication.
+
 ## Deployment
 You can access the live version of the website <a href="https://vdgtracker.herokuapp.com">here</a>
 
