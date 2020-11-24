@@ -2,6 +2,7 @@
 Video games tracker is a full stack web app that allows users to keep track of their games by adding games to their account and moving them between various lists by changing the status of their play (want to play, currently playing, on hold, finished, and dropped).
 
 ## Deployment
+You can access the live version of the website <a href="https://vdgtracker.herokuapp.com">here</a>
 
 ## Technologies Used
 * Flask

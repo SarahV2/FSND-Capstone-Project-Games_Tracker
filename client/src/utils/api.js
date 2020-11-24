@@ -1,5 +1,5 @@
 const link = 'http://localhost:5000/api';
-
+//const link = 'https://vdgtracker.herokuapp.com/api';
 //--------------------------------------------------- Game ----------------------------------------------
 
 // Add a new game

@@ -102,6 +102,8 @@ The API will return 7 error types:
 }
 ```
 
+```Note```: the following three endpoints require a token of a user with admin privileges, which we can pass as a local variable: ```export Token="ADMIN_TOKEN``` 
+
 * #### POST ```/games```
   * General: Adds a new game and returns the newly created game along with a success value
   * Sample:
@@ -175,6 +177,8 @@ curl http://127.0.0.1:5000/api/games/16 -X PATCH -H "Authorization: ${token}" -H
 }
 
 ```
+
+```Note```: the following four endpoints require a token of a user with "gamer" role, which we can pass as a local variable: ```export Token="GAMER_TOKEN``` as well as an email which can be set up in the same way.
 
 
 * #### POST ```/user/records```

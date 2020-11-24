@@ -13,7 +13,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 setup_db(app)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 # db_drop_and_create_all()
