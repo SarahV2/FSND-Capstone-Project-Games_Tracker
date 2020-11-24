@@ -1,4 +1,4 @@
-# FSND-Capstone-Project-Games
+# Video Game Tracker
 Video games tracker is a full stack web app that allows users to keep track of their games by adding games to their account and moving them between various lists by changing the status of their play (want to play, currently playing, on hold, finished, and dropped).
 
 ## Deployment
