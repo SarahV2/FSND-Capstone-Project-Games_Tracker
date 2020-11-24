@@ -19,10 +19,10 @@ class GamesTrackerTestCase(unittest.TestCase):
         self.user_email = os.environ['EMAIL']
 
         self.gamer_header = {
-            "Authorization": 'bearer '+self.gamer_token}
+            "Authorization": 'bearer ' + self.gamer_token}
 
         self.admin_header = {
-            "Authorization": 'bearer '+self.admin_token}
+            "Authorization": 'bearer ' + self.admin_token}
 
         self.new_game = {
             "title": "One cool game",
@@ -101,7 +101,10 @@ class GamesTrackerTestCase(unittest.TestCase):
     # POST /api/games
 
     def test_add_game(self):
-        res = self.client().post("/api/games", json=self.new_game, headers=self.admin_header)
+        res = self.client().post(
+            "/api/games",
+            json=self.new_game,
+            headers=self.admin_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
@@ -131,8 +134,10 @@ class GamesTrackerTestCase(unittest.TestCase):
         self.assertEqual(data["updated_game"].get('platforms'), ['PC', 'PS5'])
 
     def test_update_game_not_found(self):
-        res = self.client().patch("/api/games/5555",
-                                  json=self.updated_game, headers=self.admin_header)
+        res = self.client().patch(
+            "/api/games/5555",
+            json=self.updated_game,
+            headers=self.admin_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
@@ -163,14 +168,16 @@ class GamesTrackerTestCase(unittest.TestCase):
 
     def test_get_gameRecords(self):
         body = {"email": self.user_email}
-        res = self.client().post("/api/user/records", json=body, headers=self.gamer_header)
+        res = self.client().post("/api/user/records",
+                                 json=body, headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
         self.assertTrue(data["userGames"])
 
     def test_get_gameRecords_bad_request(self):
-        res = self.client().post("/api/user/records", json={}, headers=self.gamer_header)
+        res = self.client().post("/api/user/records",
+                                 json={}, headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 400)
         self.assertEqual(data["success"], False)
@@ -181,7 +188,8 @@ class GamesTrackerTestCase(unittest.TestCase):
 
     def test_add_gameRecord(self):
         body = {"email": self.user_email, "gameID": 7}
-        res = self.client().post("/api/user/games", json=body, headers=self.gamer_header)
+        res = self.client().post("/api/user/games",
+                                 json=body, headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data["success"], True)
@@ -190,7 +198,8 @@ class GamesTrackerTestCase(unittest.TestCase):
 
     def test_add_gameRecord_game_not_found(self):
         body = {"email": self.user_email, "gameID": 5555}
-        res = self.client().post("/api/user/games", json=body, headers=self.gamer_header)
+        res = self.client().post("/api/user/games",
+                                 json=body, headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data["success"], False)
@@ -250,7 +259,10 @@ class GamesTrackerTestCase(unittest.TestCase):
                          "missing_authorization_header")
 
     def test_add_game_unauthorized(self):
-        res = self.client().post("/api/games", json=self.new_game, headers=self.gamer_header)
+        res = self.client().post(
+            "/api/games",
+            json=self.new_game,
+            headers=self.gamer_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data["success"], False)
@@ -268,7 +280,8 @@ class GamesTrackerTestCase(unittest.TestCase):
                          "missing_authorization_header")
 
     def test_get_user_records_unauthorized(self):
-        res = self.client().post("/api/user/records", headers=self.admin_header)
+        res = self.client().post("/api/user/records",
+                                 headers=self.admin_header)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data["success"], False)

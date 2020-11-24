@@ -41,7 +41,8 @@ def get_games():
 
     current_list = paginate_games(request, games_list)
 
-    return jsonify({"success": True, "games": current_list, "total_games": len(games_list)}), 200
+    return jsonify({"success": True, "games": current_list,
+                    "total_games": len(games_list)}), 200
 
 
 # -----------------------------------------------------------------
@@ -90,7 +91,7 @@ def addGame(token):
 
     try:
         newGame.insert()
-    except:
+    except BaseException:
         newGame.undo()
     return jsonify({"success": True, "new_game": newGame.format()}), 200
 
@@ -117,7 +118,7 @@ def updateGameInfo(token, game_id):
 
     try:
         game.update()
-    except:
+    except BaseException:
         game.undo()
     return jsonify({"success": True, "updated_game": game.format()}), 200
 
@@ -137,7 +138,7 @@ def deleteGame(token, game_id):
             record.delete()
 
         game.delete()
-    except:
+    except BaseException:
         game.undo()
     return jsonify({"success": True, "deleted": game_id}), 200
 
@@ -154,7 +155,7 @@ def addUser(user_email):
 
     try:
         newUser.insert()
-    except:
+    except BaseException:
         newUser.undo()
     return newUser.id
 
@@ -211,12 +212,13 @@ def getRecordDetails(user_id, game_id):
 
 # GET User's records
 
+
 @app.route("/api/user/records", methods=["POST"])
 @requires_auth("get:records")
 def getUserRecords(token):
     body = request.get_json()
     user_email = body.get("email", None)
-    print(user_email)
+    # print(user_email)
     if user_email is None:
         abort(400)
     currentUserID = getUserID(user_email)
@@ -288,7 +290,7 @@ def addGameRecord(token):
         newRecord.insert()
         detailedRecord = getRecordDetails(currentUserID, game_id)
 
-    except:
+    except BaseException:
         newRecord.undo()
 
     return (
@@ -326,7 +328,7 @@ def updateGameRecord(token, record_id):
         record.update()
 
         detailedRecord = getRecordDetails(currentUserID, game_id)
-    except:
+    except BaseException:
         record.undo()
 
     return (
@@ -354,7 +356,7 @@ def deleteRecord(token, record_id):
         abort(404)
     try:
         record.delete()
-    except:
+    except BaseException:
         record.undo()
 
     return (
@@ -401,7 +403,8 @@ def getUserGamesIDs(token):
 
 @app.errorhandler(422)
 def unprocessable(error):
-    return jsonify({"success": False, "error": 422, "message": "unprocessable"}), 422
+    return jsonify({"success": False, "error": 422,
+                    "message": "unprocessable"}), 422
 
 
 @app.errorhandler(404)

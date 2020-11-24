@@ -3,7 +3,6 @@ import { Table, Container } from 'react-bootstrap';
 import GameDetails from './GameDetails';
 import { getAllGames } from '../../utils/api';
 
-
 export default class FullGameList extends Component {
   state = {
     currentList: [],
@@ -57,7 +56,7 @@ export default class FullGameList extends Component {
     return pageNumbers;
   }
   render() {
-    console.log(this.props.token)
+    // console.log(this.props.token)
     const list = this.state.currentList.map((game, index) => {
       return (
         <GameDetails
@@ -73,7 +72,7 @@ export default class FullGameList extends Component {
         <div style={{ marginBottom: '5%', height: '50px' }}>{''}</div>
         <h3 className='text-center'>Manage Games</h3>
         <div className='centered'>
-          <Table striped bordered hover >
+          <Table striped bordered hover>
             <thead>
               <tr>
                 <th>Poster</th>
@@ -90,7 +89,6 @@ export default class FullGameList extends Component {
         </div>
         <div className='pagination-menu'>{this.createPagination()}</div>
         <div style={{ marginTop: '5%', height: '50px' }}>{''}</div>
-
       </Container>
     );
   }
