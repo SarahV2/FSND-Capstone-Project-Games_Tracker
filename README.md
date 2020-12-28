@@ -17,7 +17,7 @@ You can access the live version of the website <a href="https://vdgtracker.herok
 ## Installation
 
 ### Prerequisites
-You'll need to have Flask and PostgreSQL installed on your machine prior proceesing with the rest of the installation process for this project.
+You'll need to have Flask and PostgreSQL installed on your machine prior proceeding with the rest of the installation process for this project.
 * To install Flask run the command: ```pip3 install flask```
 * Download and install <a href="https://www.postgresql.org/download/">PostgreSQL</a>
 
